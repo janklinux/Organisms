@@ -41,9 +41,9 @@ Welcome to the Otago Research Genetic Algorithm for Nanoclusters, Including Stru
    :alt: Licence
 
 
-.. .. image:: https://img.shields.io/lgtm/grade/python/github/GardenGroupUO/Organisms
-..     :target: https://lgtm.com/projects/g/GardenGroupUO/Organisms/context:python
-..     :alt: LGTM Grade
+.. image:: https://img.shields.io/lgtm/grade/python/github/GardenGroupUO/Organisms
+   :target: https://lgtm.com/projects/g/GardenGroupUO/Organisms/context:python
+   :alt: LGTM Grade
 
 
 .. sectionauthor:: Dr. Anna Garden <anna.garden@otago.ac.nz>
