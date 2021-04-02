@@ -69,14 +69,14 @@ These include the details needed for this program to make the trials desired. Th
 	* **making_files_for** (*str.*): This tells how the MakeTrials program will write files for performing multiple genetic algorithm trials. See :ref:`How files are created for running multiple genetic algorithm trials <Using_MakeTrials_making_files_for>` for more information about this.   
 	* **no_of_packets_to_make** (*int*): If ``making_files_for = 'slurm_JobArrays_packets'``, then this tells the MakeTrials program how to split the **NoOfTrials** number of genetic algorithm trials into packets. See :ref:`How files are created for running multiple genetic algorithm trials <Using_MakeTrials_making_files_for>` for more information about this.   
 
-An example of these parameters in MakeTrials.py is given below:
+An example of these parameters in MakeTrials.py is given below: 
 
 .. literalinclude:: MakeTrials.py
 	:language: python
 	:tab-width: 4
 	:linenos:
 	:lineno-start: 62
-	:lines: 62-68
+	:lines: 62-67
 
 1.1) ``making_files_for``: How files are created for running multiple genetic algorithm trials
 ----------------------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ Avoid using ``'slurm_JobArrays_full'`` if possible as performing lots of small j
 
 As a guideline, set ``JobArraysDetails['time']`` to as large a wall time as possible for the partition you are using on your slurm cluster. 
 
-An example of this shown below.
+An example of this shown below:
 
 .. literalinclude:: mass_submit_packets.sl
 	:language: bash
@@ -140,8 +140,8 @@ An example of these parameters in MakeTrials.py is given below:
 	:language: python
 	:tab-width: 4
 	:linenos:
-	:lineno-start: 70
-	:lines: 70-79
+	:lineno-start: 69
+	:lines: 69-78
 
 3) Time to Run the MakeTrials Program
 =====================================
@@ -152,8 +152,8 @@ Now all there is to do is to run this program!
 	:language: python
 	:tab-width: 4
 	:linenos:
-	:lineno-start: 82
-	:lines: 82-112
+	:lineno-start: 81
+	:lines: 81-112
 
 Can I make writing trials easily for many types of system.
 **********************************************************

@@ -34,12 +34,12 @@ from RunMinimisation import Minimisation_Function
 memory_operator_information = {'Method': 'Off'}
 
 # This dictionary includes the information required by the predation scheme
-predation_information = {'Predation Operator': 'SCM', 'SCM Scheme': 'TC-SRA', 'rCut_high': 3.2, 'rCut_low': 2.9, 'rCut_resolution': 0.05}
+predation_information = {'Predation Operator': 'SCM', 'SCM Scheme': 'T-SCM', 'rCut_high': 3.2, 'rCut_low': 2.9, 'rCut_resolution': 0.05}
 
 # This dictionary includes the information required by the fitness scheme
 energy_fitness_function = {'function': 'exponential', 'alpha': 3.0}
 SCM_fitness_function = {'function': 'exponential', 'alpha': 1.0}
-fitness_information = {'Fitness Operator': 'SCM + Energy', 'Use Predation Information': True, 'SCM_fitness_contribution': 0.5, 'Dynamic Mode': False, 'energy_fitness_function': energy_fitness_function, 'SCM_fitness_function': SCM_fitness_function}
+fitness_information = {'Fitness Operator': 'SCM + Energy', 'SCM Scheme': 'T-SCM', 'Use Predation Information': True, 'SCM_fitness_contribution': 0.5, 'Dynamic Mode': False, 'energy_fitness_function': energy_fitness_function, 'SCM_fitness_function': SCM_fitness_function}
 
 # Variables required for the Recording_Cluster.py class/For recording the history as required of the genetic algorithm.
 ga_recording_information = {}
@@ -57,15 +57,14 @@ rounding_criteria = 10
 print_details = False
 no_of_cpus = 2
 finish_algorithm_if_found_cluster_energy = None
-total_length_of_running_time = None
+total_length_of_running_time = 6.0
 
 # These are the details that will be used to create all the Trials for this set of genetic algorithm experiments.
 dir_name = 'ThisIsTheFolderThatScriptsWillBeWrittenTo'
 NoOfTrials = 100
 Condense_Single_Mention_Experiments = True
 making_files_for = 'slurm_JobArrays_full'
-finish_algorithm_if_found_cluster_energy = None
-total_length_of_running_time = 6.0
+no_of_packets_to_make = None # This does not need a setting in this example as we have set 'making_files_for = 'slurm_JobArrays_full'. This only need to be set to an int if making_files_for = 'slurm_JobArrays_packet'
 
 # These are the details that are used to create the Job Array for slurm
 JobArraysDetails = {}
@@ -109,5 +108,6 @@ MakeTrialsProgram(cluster_makeup=cluster_makeup,
 	JobArraysDetails=JobArraysDetails,
 	making_files_for=making_files_for,
 	finish_algorithm_if_found_cluster_energy=finish_algorithm_if_found_cluster_energy,
-	total_length_of_running_time=total_length_of_running_time)
+	total_length_of_running_time=total_length_of_running_time,
+	no_of_packets_to_make=no_of_packets_to_make)
 ''' ---------------- '''

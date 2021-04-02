@@ -68,6 +68,7 @@ for cluster_makeup, Minimisation_Function in cluster_makeups:
 		NoOfTrials = 100
 		Condense_Single_Mention_Experiments = True
 		making_files_for = 'slurm_JobArrays_full'
+		no_of_packets_to_make = None # This does not need a setting in this example as we have set 'making_files_for = 'slurm_JobArrays_full'. This only need to be set to an int if making_files_for = 'slurm_JobArrays_packet'
 
 		''' ---------------- '''
 		# These are the details that are used to create the Job Array for slurm
@@ -112,5 +113,6 @@ for cluster_makeup, Minimisation_Function in cluster_makeups:
 			JobArraysDetails=JobArraysDetails,
 			making_files_for=making_files_for,
 			finish_algorithm_if_found_cluster_energy=finish_algorithm_if_found_cluster_energy,
-			total_length_of_running_time=total_length_of_running_time)
+			total_length_of_running_time=total_length_of_running_time,
+			no_of_packets_to_make=no_of_packets_to_make)
 		''' ---------------- '''
