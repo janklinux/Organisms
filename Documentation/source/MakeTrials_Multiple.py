@@ -42,7 +42,7 @@ for cluster_makeup, Minimisation_Function in cluster_makeups:
 		# This dictionary includes the information required by the fitness scheme
 		energy_fitness_function = {'function': 'exponential', 'alpha': 3.0}
 		SCM_fitness_function = {'function': 'exponential', 'alpha': 1.0}
-		fitness_information = {'Fitness Operator': 'SCM + Energy', 'Use Predation Information': False, 'SCM_fitness_contribution': 0.5, 'Dynamic Mode': False, 'energy_fitness_function': energy_fitness_function, 'SCM_fitness_function': SCM_fitness_function}
+		fitness_information = {'Fitness Operator': 'Structure + Energy', 'Use Predation Information': False, 'SCM_fitness_contribution': 0.5, 'Dynamic Mode': False, 'energy_fitness_function': energy_fitness_function, 'SCM_fitness_function': SCM_fitness_function}
 
 		# Variables required for the Recording_Cluster.py class/For recording the history as required of the genetic algorithm.
 		ga_recording_information = {}

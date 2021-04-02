@@ -6,6 +6,7 @@ This program is designed to create all the Run.py files and submit.sl/mass_submi
 This files are ordered into not subdirectories.
 '''
 
+import os, inspect
 from shutil import copyfile
 from Organisms.Subsidiary_Programs.Create_submitSL_slurm_Main import make_submitSL, make_mass_submitSL_full, make_mass_submitSL_packets
  
