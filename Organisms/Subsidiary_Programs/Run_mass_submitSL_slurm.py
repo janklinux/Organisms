@@ -171,6 +171,7 @@ print('Submitting mass_submit.sl scripts to slurm.')
 # Time to submit all the GA scripts! Lets get this stuff going!
 submitting_command = "sbatch mass_submit.sl"
 for (dirpath, dirnames, filenames) in os.walk(path):
+    print(dirpath)
     dirnames.sort()
     if 'mass_submit.sl' in filenames:
         # determine if it is the right time to submit jobs
