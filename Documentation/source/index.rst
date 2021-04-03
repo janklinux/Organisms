@@ -7,7 +7,7 @@ Welcome to the Otago Research Genetic Algorithm for Nanoclusters, Including Stru
 ########################################################################################################################################
 
 .. image:: https://img.shields.io/badge/Citation-click%20here-green.svg
-   :target: https://pubs.acs.org/journal/jcisd8
+   :target: https://dx.doi.org/10.1021/acs.jcim.0c01128
    :alt: Citation
    
 

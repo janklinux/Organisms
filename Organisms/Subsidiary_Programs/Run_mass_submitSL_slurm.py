@@ -48,7 +48,7 @@ else:
 path = os.getcwd()
 
 def countdown(t):
-    print('Will wait for ' + str(float(t)/60.0) + ' minutes, then will resume Pan submissions.\n')
+    print('Will wait for ' + str(float(t)/60.0) + ' minutes, then will resume Slurm submissions.\n')
     while t:
         mins, secs = divmod(t, 60)
         timeformat = str(mins) + ':' + str(secs)
@@ -63,8 +63,8 @@ def countdown(t):
 
 def myrun(cmd):
     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    import pdb; pdb.set_trace()
-    stdout_lines = [print(line) for line in iter(proc.stdout.readline,'')]
+    stdout_lines = [str(line) for line in iter(proc.stdout.readline,b'')]
+    #stdout_lines = [print(line) for line in iter(proc.stdout.readline,'')]
     #import pdb; pdb.set_trace()
     #proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #stdout_lines = [line for line in io.TextIOWrapper(proc.stdout, encoding="utf-8")]
@@ -128,7 +128,6 @@ def get_number_to_trials_that_will_be_submitted_by_mass_submitSL(dirpath):
 command = "squeue -r -u $USER"
 def check_max_jobs_in_queue_after_next_submission(dirpath):
     while True:
-        import pdb; pdb.set_trace()
         text = myrun(command)
         nlines = len(text.splitlines())-1
         if not (nlines == -1):
@@ -179,7 +178,6 @@ for (dirpath, dirnames, filenames) in os.walk(path):
         print('*****************************************************************************')
         while True:
             reached_max_jobs, number_in_queue = check_max_jobs_in_queue_after_next_submission(dirpath)
-            print(dirpath)
             if reached_max_jobs:
                 print('-----------------------------------------------------------------------------')
                 print('You can not have any more jobs in the queue before submitting the mass_sub. Will wait a bit of time for some of them to complete')
@@ -194,6 +192,7 @@ for (dirpath, dirnames, filenames) in os.walk(path):
         name = dirpath.replace(path, '').split('/', -1)[1:]
         name = "_".join(str(x) for x in name)
         print("Submitting " + str(name) + " to slurm.")
+        print('Submission .sl file found in: '+str(os.getcwd()))
         error_counter = 0
         while True:
             if error_counter == number_of_consecutive_error_before_exitting:
@@ -227,7 +226,7 @@ for (dirpath, dirnames, filenames) in os.walk(path):
         else:
             reached_max_jobs, number_in_queue = check_max_jobs_in_queue_after_next_submission(dirpath)
             print('The number of jobs in the queue after submitting job is currently is: '+str(number_in_queue))
-            print('Will wait for '+str(time_to_wait_max_queue)+' to give time between consecutive submissions')
+            #print('Will wait for '+str(time_to_wait_max_queue)+' to give time between consecutive submissions')
             countdown(time_to_wait_max_queue)
             print('*****************************************************************************')
         dirnames[:] = []
