@@ -63,7 +63,8 @@ def countdown(t):
 
 def myrun(cmd):
     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout_lines = [line for line in iter(proc.stdout.readline,'')]
+    import pdb; pdb.set_trace()
+    stdout_lines = [print(line) for line in iter(proc.stdout.readline,'')]
     #import pdb; pdb.set_trace()
     #proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #stdout_lines = [line for line in io.TextIOWrapper(proc.stdout, encoding="utf-8")]
@@ -127,6 +128,7 @@ def get_number_to_trials_that_will_be_submitted_by_mass_submitSL(dirpath):
 command = "squeue -r -u $USER"
 def check_max_jobs_in_queue_after_next_submission(dirpath):
     while True:
+        import pdb; pdb.set_trace()
         text = myrun(command)
         nlines = len(text.splitlines())-1
         if not (nlines == -1):
@@ -171,13 +173,13 @@ print('Submitting mass_submit.sl scripts to slurm.')
 # Time to submit all the GA scripts! Lets get this stuff going!
 submitting_command = "sbatch mass_submit.sl"
 for (dirpath, dirnames, filenames) in os.walk(path):
-    print(dirpath)
     dirnames.sort()
     if 'mass_submit.sl' in filenames:
         # determine if it is the right time to submit jobs
         print('*****************************************************************************')
         while True:
             reached_max_jobs, number_in_queue = check_max_jobs_in_queue_after_next_submission(dirpath)
+            print(dirpath)
             if reached_max_jobs:
                 print('-----------------------------------------------------------------------------')
                 print('You can not have any more jobs in the queue before submitting the mass_sub. Will wait a bit of time for some of them to complete')
