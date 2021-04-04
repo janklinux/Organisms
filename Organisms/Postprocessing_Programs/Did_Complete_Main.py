@@ -3,7 +3,7 @@ Did_Find_LES.py, Geoffrey Weal, 08/03/2019
 
 This program will determine which of your genetic algorithm trials have completed up to a certain generation. 
 '''
-import sys, subprocess
+import os, sys, subprocess
 
 def tail(f, n, offset=0):
     proc = subprocess.Popen(['tail', '-n', str(n + offset), f], stdout=subprocess.PIPE)
@@ -35,11 +35,47 @@ def Did_Trial_finish_successfully(filepath):
     total_no_of_generation, no_offspring_per_generation = get_variables_from_run(filepath)
     # Read EnergyProfile.txt
     #with open(filepath+'/Population/EnergyProfile.txt','r') as EnergyProfileTXT:
+    # --------------------------------------------------------------------------------------------------
+    if not os.path.exists(filepath+'/Population/EnergyProfile.txt'):
+        if os.path.exists(filepath+'/Population/current_population_details.txt'):
+            with open(filepath+'/Population/current_population_details.txt','r') as current_population_detailsTXT:
+                line = current_population_detailsTXT.readline()
+                if line.startswith('GA Iteration: None'):
+                    return False, None
+                elif line.startswith('GA Iteration: 0'):
+                    return False, 0
+                else:
+                    print('Error in def Did_Trial_finish_successfully, Did_Complete_Main.py')
+                    print('There is no EnergyProfile.txt file, but current_population_details.txt says that the genetic algorithm has been running.')
+                    print('Check to make sure that all files that the genetic algorithm should have made have been made.')
+                    print('Especially the EnergyProfile.txt file')
+                    print('See https://organisms.readthedocs.io/en/latest/Files_Made_During_the_Genetic_Algorithm.html to see what files are made and should be included as the Organisms program proceeds.')
+                    print('')
+                    print('This program will now finish without completing.')
+                    exit()
+        else:
+            print('Error in def Did_Trial_finish_successfully, Did_Complete_Main.py')
+            print('Did not find a EnergyProfile.txt file, then could not find a current_population_details.txt file')
+            print('If EnergyProfile.txt is not found, this may mean that the genetic algorithm was cancelled before the genetic algorithm made the population and was about to become.')
+            print('For this reason, we then look to see if the current_population_details.txt to confirm there is no initial population.')
+            print('This can not be verified, so best not to continue.')
+            print('')
+            print('What has likely happened is that the genetic algorithm has been cancelled just as it was about to begin.')
+            print('The algorithm should be able to be resumed, but just in this case it is best to just start that genetic algorithm again from the beginning')
+            print('')
+            print('However, check to make sure that no files have been accidentally deleted.')
+            print('See https://organisms.readthedocs.io/en/latest/Files_Made_During_the_Genetic_Algorithm.html to see what files are made and should be included as the Organisms program proceeds.')
+            print('')
+            print('This program will now finish without completing.')
+            exit()
+    # --------------------------------------------------------------------------------------------------
     last_lines_in_EnergyProfile = tail(filepath+'/Population/EnergyProfile.txt',no_offspring_per_generation) 
     all_cluster_gen_made = []
     finished_found_LES = False
     Restart_due_to_epoch = False
     for line in last_lines_in_EnergyProfile:
+        if isinstance(line, bytes):
+            line = line.decode()
         if line.startswith('Finished prematurely as LES energy found.'):
             finished_found_LES = True
         elif line.startswith('Restarting due to epoch.'):
@@ -85,6 +121,7 @@ def has_all_trials_finished(dirpath, dirnames):
             print('===================================================================')
             print('Error in def has_all_trials_finished in Did_Complete_Main.py')
             print('Something weird is happening with Trial '+str(trial_no))
+            print(dirpath+'/'+dirname)
             print('Getting the following expection:')
             print()
             print('------------->')
@@ -93,7 +130,8 @@ def has_all_trials_finished(dirpath, dirnames):
             print()
             print('Check this out and then repeat your program again')
             print('This program will finish here.')
-            exit ('===================================================================')
+            print('===================================================================')
+            raise Exception(expection)
         if did_trial_finish_successfully:
             completed_Trials.append(trial_no)
         else:

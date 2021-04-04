@@ -19,6 +19,7 @@ class GA_Program_Details:
 		#self.number_of_successful_mutation = [0]*len(GA_Program.mutTypes)
 		self.no_of_explosions = 0
 		self.no_of_not_converged = 0
+		self.did_epoch_in_current_generation = False
 		self.create(is_new_ga)
 
 	##############################################################################################################
@@ -68,9 +69,26 @@ class GA_Program_Details:
 		time_taken = endTime - self.startTime
 		del self.startTime
 		self.open('a')
-		self.GA_Run_Details.write(str(generation)+': '+str(time_taken)+' s\n')
+		self.GA_Run_Details.write(str(generation)+': '+str(time_taken)+' s')
+		if self.did_epoch_in_current_generation:
+			epoch_time_taken = self.epoch_endTime - self.epoch_startTime
+			self.GA_Run_Details.write('\t(epoch time: '+str(epoch_time_taken)+' s)')
+		self.GA_Run_Details.write('\n')
 		self.close()
 		return time_taken
+
+	def epoch_start_clock(self):
+		"""
+		Get the Starting time for this genetic algorithm, which will be used to time each generation.
+		"""
+		self.did_epoch_in_current_generation = True
+		self.epoch_startTime = time.time()
+
+	def epoch_end_clock(self):
+		"""
+		Get the Starting time for this genetic algorithm, which will be used to time each generation.
+		"""
+		self.epoch_endTime = time.time()
 
 	def ending_details(self):
 		"""

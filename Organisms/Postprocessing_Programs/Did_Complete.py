@@ -16,6 +16,7 @@ def did_Trial_finish_successfully(filepath):
                 return True
     return False
 
+number_of_trials = []
 Overall_Trials_to_check = {}
 
 for dirpath, dirnames, filenames in os.walk(path):
@@ -26,6 +27,10 @@ for dirpath, dirnames, filenames in os.walk(path):
         toString += '******************************************************************************\n'
         toString += '******************************************************************************\n'
         toString += 'This set of genetic algorithm trials finished '+('SUCCESSFULLY' if completed_successfully else 'UNSUCCESSFULLY')+'.\n'
+        toString += '\n'
+        toString += '# Successful Trials: '+str(len(completed_Trials))+';\t# Unuccessful Trials: '+str(len(incomplete_Trials))+';\tTotal # of Trials: '+str(len(completed_Trials)+len(incomplete_Trials))+'\n'
+        number_of_trials.append((dirpath,len(completed_Trials),len(incomplete_Trials)))
+        toString += '\n'
         toString += 'The following Trials in '+str(dirpath)+' completed or did not complete.\n'
         toString += 'Completed Trials: '+str(completed_Trials)+'\n'
         toString += 'Incomplete Trials: '+str(incomplete_Trials)+'\n'
@@ -46,11 +51,17 @@ for dirpath, dirnames, filenames in os.walk(path):
 
 print('########################################################################')
 print('########################################################################')
+number_of_trials.sort()
+print('Number of Trials that were performed for each set of trials:')
+for dirpath, no_of_successful, no_of_unsuccessful in number_of_trials:
+    print(dirpath+': '+str(no_of_successful+no_of_unsuccessful)+'\t(successful: '+str(no_of_successful)+'; unsuccessful: '+str(no_of_unsuccessful)+')')
+print('########################################################################')
+print('########################################################################')
 print('Details of Trials that did not complete:')
 if len(Overall_Trials_to_check) == 0:
     print('ALL Trials completed SUCCESSFULLY')
 else:
-    for dirpath, incomplete_Trials in Overall_Trials_to_check.iteritems():
+    for dirpath, incomplete_Trials in Overall_Trials_to_check.items():
         print('path: '+str(dirpath)+'; Trials to Repeat: '+str(incomplete_Trials))
 print('########################################################################')
 print('########################################################################')

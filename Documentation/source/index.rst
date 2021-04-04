@@ -119,6 +119,7 @@ Table of Contents
    Installation
    How_To_Use_The_Organisms_Program
    Using_Run
+   Files_Made_During_the_Genetic_Algorithm
    Examples_of_Running_GA
    Local_Minimisation_Function
    Using_MakeTrials

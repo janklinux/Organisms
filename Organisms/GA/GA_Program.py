@@ -209,17 +209,17 @@ class GA_Program():
 			is_energy_in_fitness_function = self.fitness_operator.fitness_switch == 'Energy' or (self.fitness_operator.fitness_switch == 'SCM + Energy' and not self.fitness_operator.SCM_fitness_contribution == 1.0)
 			is_SCM_in_fitness_function = self.fitness_operator.fitness_switch == 'SCM + Energy' and not self.fitness_operator.SCM_fitness_contribution == 0.0
 			if is_energy_in_fitness_function and not self.population.is_there_an_energy_range(self.rounding_criteria):
-				reset_population(self,generation_number)
+				self.perform_epoch_on_population(self.generation_number):
 			elif is_SCM_in_fitness_function and not self.fitness_operator.is_there_an_similarity_range(self.similarity_rounding_criteria):
-				reset_population(self,generation_number)
+				self.perform_epoch_on_population(self.generation_number):
 			elif self.epoch.should_epoch(self.population,generation_number):
 				if self.epoch.first_epoch_to_change_fitness_function:
 					perform_reset_population, self.fitness_operator = self.epoch.change_fitness_function(self.fitness_operator)
 					if perform_reset_population:
-						reset_population(self,generation_number)
+						self.perform_epoch_on_population(self.generation_number):
 				else:
-					reset_population(self,generation_number)
-				#reset_population(self,generation_number)
+					self.perform_epoch_on_population(self.generation_number):
+				#self.perform_epoch_on_population(self.generation_number):
 			else:
 				self.fitness_operator.remove_from_database(clusters_removed_from_the_population+cleaned_offspring_names)
 				self.fitness_operator.assign_all_fitnesses_after_natural_selection(generation_number)
@@ -418,6 +418,26 @@ class GA_Program():
 		if self.print_details:
 			print("****---------------------****")
 		return clusters_removed_from_the_population
+
+	#########################################################################################################################
+	#########################################################################################################################
+
+	#----------------------------------------------------------------------------#
+	#                                   Epoch                                    #
+	#                     This is how the population will epoch                  #
+	#----------------------------------------------------------------------------#
+
+	def perform_epoch_on_population(self,generation_number):
+		"""
+		This definition will perform an epoch upon the population
+
+		:param generation_number: This is the current generation of the genetic algorithm run. This mauy not be 0 if you are restarting the algorithm
+		:type  generation_number: int
+
+		"""
+		self.ga_program_details.epoch_start_clock()
+		reset_population(generation_number)
+		self.ga_program_details.epoch_end_clock()
 
 	#########################################################################################################################
 	#########################################################################################################################

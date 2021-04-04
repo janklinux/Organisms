@@ -63,7 +63,8 @@ def countdown(t):
 
 def myrun(cmd):
     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout_lines = [str(line) for line in iter(proc.stdout.readline,b'')]
+    stdout_lines = list(iter(proc.stdout.readline,b''))
+    stdout_lines = [line.decode() for line in stdout_lines]
     #stdout_lines = [print(line) for line in iter(proc.stdout.readline,'')]
     #import pdb; pdb.set_trace()
     #proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
