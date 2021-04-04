@@ -209,16 +209,16 @@ class GA_Program():
 			is_energy_in_fitness_function = self.fitness_operator.fitness_switch == 'Energy' or (self.fitness_operator.fitness_switch == 'SCM + Energy' and not self.fitness_operator.SCM_fitness_contribution == 1.0)
 			is_SCM_in_fitness_function = self.fitness_operator.fitness_switch == 'SCM + Energy' and not self.fitness_operator.SCM_fitness_contribution == 0.0
 			if is_energy_in_fitness_function and not self.population.is_there_an_energy_range(self.rounding_criteria):
-				self.perform_epoch_on_population(self.generation_number):
+				self.perform_epoch_on_population(self.generation_number)
 			elif is_SCM_in_fitness_function and not self.fitness_operator.is_there_an_similarity_range(self.similarity_rounding_criteria):
-				self.perform_epoch_on_population(self.generation_number):
+				self.perform_epoch_on_population(self.generation_number)
 			elif self.epoch.should_epoch(self.population,generation_number):
 				if self.epoch.first_epoch_to_change_fitness_function:
 					perform_reset_population, self.fitness_operator = self.epoch.change_fitness_function(self.fitness_operator)
 					if perform_reset_population:
-						self.perform_epoch_on_population(self.generation_number):
+						self.perform_epoch_on_population(self.generation_number)
 				else:
-					self.perform_epoch_on_population(self.generation_number):
+					self.perform_epoch_on_population(self.generation_number)
 				#self.perform_epoch_on_population(self.generation_number):
 			else:
 				self.fitness_operator.remove_from_database(clusters_removed_from_the_population+cleaned_offspring_names)
