@@ -30,6 +30,7 @@ def get_variables_from_run(filepath):
         exit('Error')
     return generations, no_offspring_per_generation
 
+problem_trials = []
 def Did_Trial_finish_successfully(filepath):
     # get decired generations and number of offspring per gerenation
     total_no_of_generation, no_offspring_per_generation = get_variables_from_run(filepath)
@@ -41,20 +42,29 @@ def Did_Trial_finish_successfully(filepath):
             with open(filepath+'/Population/current_population_details.txt','r') as current_population_detailsTXT:
                 line = current_population_detailsTXT.readline()
                 if line.startswith('GA Iteration: None'):
-                    return False, None
+                    return False, 0 #None
                 elif line.startswith('GA Iteration: 0'):
                     return False, 0
                 else:
+                    print('')
                     print('Error in def Did_Trial_finish_successfully, Did_Complete_Main.py')
+                    print('')
+                    print('Error occurred while examining: '+str(filepath))
+                    print('')
                     print('There is no EnergyProfile.txt file, but current_population_details.txt says that the genetic algorithm has been running.')
                     print('Check to make sure that all files that the genetic algorithm should have made have been made.')
                     print('Especially the EnergyProfile.txt file')
                     print('See https://organisms.readthedocs.io/en/latest/Files_Made_During_the_Genetic_Algorithm.html to see what files are made and should be included as the Organisms program proceeds.')
                     print('')
                     print('This program will now finish without completing.')
-                    exit()
+                    problem_trials.append(filepath)
+                    return False, -1
         else:
+            print('')
             print('Error in def Did_Trial_finish_successfully, Did_Complete_Main.py')
+            print('')
+            print('Error occurred while examining: '+str(filepath))
+            print('')
             print('Did not find a EnergyProfile.txt file, then could not find a current_population_details.txt file')
             print('If EnergyProfile.txt is not found, this may mean that the genetic algorithm was cancelled before the genetic algorithm made the population and was about to become.')
             print('For this reason, we then look to see if the current_population_details.txt to confirm there is no initial population.')
@@ -67,7 +77,8 @@ def Did_Trial_finish_successfully(filepath):
             print('See https://organisms.readthedocs.io/en/latest/Files_Made_During_the_Genetic_Algorithm.html to see what files are made and should be included as the Organisms program proceeds.')
             print('')
             print('This program will now finish without completing.')
-            exit()
+            problem_trials.append(filepath)
+            return False, -1
     # --------------------------------------------------------------------------------------------------
     last_lines_in_EnergyProfile = tail(filepath+'/Population/EnergyProfile.txt',no_offspring_per_generation) 
     all_cluster_gen_made = []
@@ -147,4 +158,4 @@ def has_all_trials_finished(dirpath, dirnames):
     incomplete_Trials.sort()
     at_generation.sort(key=lambda x:x[1])
     completed_successfully = True if len(incomplete_Trials) == 0 else False
-    return completed_successfully, completed_Trials, incomplete_Trials, at_generation
+    return completed_successfully, completed_Trials, incomplete_Trials, at_generation, problem_trials

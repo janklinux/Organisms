@@ -19,10 +19,12 @@ def did_Trial_finish_successfully(filepath):
 number_of_trials = []
 Overall_Trials_to_check = {}
 
+all_problem_trials = []
+
 for dirpath, dirnames, filenames in os.walk(path):
     dirnames.sort()
     if any([(dirname.startswith('Trial') and dirname.replace('Trial','').isdigit()) for dirname in dirnames]):
-        completed_successfully, completed_Trials, incomplete_Trials, at_generation = has_all_trials_finished(dirpath, dirnames)
+        completed_successfully, completed_Trials, incomplete_Trials, at_generation, problem_trials = has_all_trials_finished(dirpath, dirnames)
         toString = ''
         toString += '******************************************************************************\n'
         toString += '******************************************************************************\n'
@@ -48,6 +50,7 @@ for dirpath, dirnames, filenames in os.walk(path):
         filenames[:] = []
         if not completed_successfully:
             Overall_Trials_to_check[dirpath] = incomplete_Trials
+        all_problem_trials += problem_trials
 
 print('########################################################################')
 print('########################################################################')
@@ -65,3 +68,13 @@ else:
         print('path: '+str(dirpath)+'; Trials to Repeat: '+str(incomplete_Trials))
 print('########################################################################')
 print('########################################################################')
+if not len(all_problem_trials) == 0:
+    print('There were also a few problem trials that this Did_Complete.py program had errors with. These should be checked out as something may be wrong with the trial itself and may just need to be reset.')
+    print('This could be for example a file was accidentally deleted')
+    print('These problem trials are:')
+    print('')
+    for problem_trial in all_problem_trials:
+        print(str(problem_trial))
+    print('')
+    print('########################################################################')
+    print('########################################################################')
