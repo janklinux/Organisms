@@ -24,7 +24,13 @@ def Minimisation_Function(cluster,collection,cluster_name):
 	#######################################################################################
 	# Perform the local optimisation method on the cluster.
 	# Parameter sequence: [p, q, a, xi, r0]
-	Gupta_parameters = {'Cu': [10.960, 2.2780, 0.0855, 1.224, 2.556]}
+	#
+	# RGL parameters below from:
+	# Crossover among structural motifs in transition and noble-metal clusters
+	# F. Baletto, R. Ferrando, A. Fortunelli, F. Montalenti and C. Mottet, J. Chem. Phys., 2002, 116, 3856–3863.
+	# https://doi.org/10.1063/1.1448484
+	r0 = 4.07/(2.0**0.5)
+	Gupta_parameters = {'Au': [10.53, 4.30, 0.2197, 1.855, r0]}
 	cluster.set_calculator(Gupta(Gupta_parameters, cutoff=1000, debug=False))
 	dyn = FIRE(cluster,logfile=None)
 	startTime = time.time(); converged = False
