@@ -199,7 +199,7 @@ class EnergyProfile:
 					import pdb; pdb.set_trace()
 					exit('The genetic algorithm will finished without starting.')
 			if counter > 0:
-				print('Removing the last '+str(counter)+' from '+str(self.path+'/EnergyProfile.txt'))
+				print('Removing the last '+str(counter)+' line(s) from '+str(self.path+'/EnergyProfile.txt'))
 				remove_end_lines_from_text(self.path+'/EnergyProfile.txt', counter)
 			else:
 				break

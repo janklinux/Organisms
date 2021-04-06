@@ -818,7 +818,7 @@ class Collection:
 				else:
 					counter += 1
 			if lines_to_remove > 0:
-				print('Removing the last '+str(lines_to_remove)+' from '+str(self.history_path))
+				print('Removing the last '+str(lines_to_remove)+' line(s) from '+str(self.history_path))
 				remove_end_lines_from_text(self.history_path, lines_to_remove)
 			else:
 				break
