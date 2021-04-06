@@ -151,7 +151,7 @@ def has_all_trials_finished(dirpath, dirnames):
         ###########
         sys.stdout.write("\r                                                                  ")
         sys.stdout.flush()
-        sys.stdout.write("\rScanning Completion: "+str(float(index+1)/float(number_of_dirnames)*100.0)+" % (Checked "+str(dirname)+").")
+        sys.stdout.write("\rScanning Completion: "+str(round(float(index+1)/float(number_of_dirnames)*100.0),2)+" % (Checked "+str(dirname)+").")
         sys.stdout.flush()
         ###########
     completed_Trials.sort()
