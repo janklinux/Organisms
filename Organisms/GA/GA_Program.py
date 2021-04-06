@@ -436,7 +436,7 @@ class GA_Program():
 
 		"""
 		self.ga_program_details.epoch_start_clock()
-		reset_population(generation_number)
+		reset_population(self,generation_number)
 		self.ga_program_details.epoch_end_clock()
 
 	#########################################################################################################################
