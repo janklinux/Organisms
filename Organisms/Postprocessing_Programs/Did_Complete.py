@@ -30,7 +30,7 @@ for dirpath, dirnames, filenames in os.walk(path):
         toString += '******************************************************************************\n'
         toString += 'This set of genetic algorithm trials finished '+('SUCCESSFULLY' if completed_successfully else 'UNSUCCESSFULLY')+'.\n'
         toString += '\n'
-        toString += '# Successful Trials: '+str(len(completed_Trials))+';\t# Unuccessful Trials: '+str(len(incomplete_Trials))+';\tTotal # of Trials: '+str(len(completed_Trials)+len(incomplete_Trials))+'\n'
+        toString += '# Successful Trials: '+str(len(completed_Trials))+';\t# Unsuccessful Trials: '+str(len(incomplete_Trials))+';\tTotal # of Trials: '+str(len(completed_Trials)+len(incomplete_Trials))+'\n'
         number_of_trials.append((dirpath,len(completed_Trials),len(incomplete_Trials)))
         toString += '\n'
         toString += 'The following Trials in '+str(dirpath)+' completed or did not complete.\n'
