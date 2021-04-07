@@ -157,3 +157,38 @@ To run this program, go into the folder that your genetic algorithms have been r
 Note that it will not delete ``arrayJob`` files that are within trials folders. This is any folder that is named ``TrialX``, where ``X`` is an integer.
 
 
+``tar_trials_collectively.py`` - Tar all ``Trials`` folders (and other files and folders)
+*****************************************************************************************
+
+This program will recursively tar all subdirectories that include ``Trials`` folders. For example, if the folder called ``OffPerGenEquals16`` contains ``Trial1``, ``Trial2``, ``Trial3``, ``Trial4``, ``Trial5``, ``Run.py``, ``RunMinimisation.py``, ``mass_submit.sl``, this program will tar ``OffPerGenEquals16`` and everything in it into the tar file called ``OffPerGenEquals16.tar`` in the same place as where ``OffPerGenEquals16`` had originally been found. 
+
+This program will also delete the Trials folders, since they have all been tarred up. Files and folder will not be deleted if you enter into the terminal:
+
+.. code-block:: bash
+
+	tar_trials_collectively.py False
+
+``untar_trials_collectively.py`` - Untar all ``Trials`` folders (and other files and folders)
+********************************************************************************************************************
+
+This program will recursively untar all subdirectories that contain a tar file, and will untar the tar file in place. This is useful for untar tar files that were made using ``tar_trials_collectively.py``
+
+This program will also delete the tar files in the process. Tar files will not be deleted if you enter into the terminal 
+
+.. code-block:: bash
+
+	untar_trials_collectively.py False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
