@@ -8,7 +8,8 @@ As well as the genetic algorithm, we have included a bunch of programs that can 
 
 .. contents:: The scripts and programs that we will be mentioned here are:
     :depth: 3
-    :local: True
+    :local:
+    :hidden: What to make sure is done before running any of these scripts. 
 
 There is also information on how to generate multiple trials of your genetic algorithm experiment on mass at :ref:`MakeTrials.py - Creating Multiple, Repeated Genetic Algorithm Trials <Using_MakeTrials>`. 
 
