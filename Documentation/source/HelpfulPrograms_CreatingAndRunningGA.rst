@@ -6,15 +6,11 @@ Helpful Programs to Create and Run the Genetic Algorithm
 
 As well as the genetic algorithm, we have included a bunch of programs that can be used to create all the scripts that are needed to run the genetic algorithm. In this articles, we will introduce all of the program that can be used to create these scripts and to run them all in mass. Example files for running many of these programs can be found in Examples/CreateSets. Some of these programs can also be run by typing the program you want to run into the terminal from whatever directory you are in. 
 
-.. toctree:: 
-	:caption: The scripts and programs that we will be mentioned here are:
-    :depth: 3
+The scripts and programs that we will be mentioned here are:
 
-    HelpfulPrograms_CreatingAndRunningGA
-
-    :hidden: 
-
-    What_to_make_sure_is_done_before_running_any_of_these_scripts
+.. contents::
+    :depth: 1
+    :local:
 
 There is also information on how to generate multiple trials of your genetic algorithm experiment on mass at :ref:`MakeTrials.py - Creating Multiple, Repeated Genetic Algorithm Trials <Using_MakeTrials>`. 
 
@@ -45,20 +41,20 @@ where ``<Path_to_Organisms>"`` is the path to get to the genetic algorithm progr
 
 See more about this in :ref:`Installation of the Genetic Algorithm <Installation_of_the_Genetic_Algorithm>`. 
 
-*get_newly_initilised_population.py* - Creating an initial population of randomly generated clusters
-****************************************************************************************************
+``get_newly_initilised_population.py`` - Creating an initial population of randomly generated clusters
+******************************************************************************************************
 
 More information on creating a newly initialised population and how to use it in the genetic algorithm can be found in :ref:`Initialising a New Population <Initialising_a_New_Population>`. 
 
-*Run_submitSL_slurm.py* - How to execute all the Run.py files for all Trial folders in slurm
-********************************************************************************************
+``Run_submitSL_slurm.py`` - How to execute all the Run.py files for all Trial folders in slurm
+**********************************************************************************************
 
 NOT ADD/DEVELOPED until I know if this is necessary. 
 
 .. _Run_mass_submitSL_slurm_py:
 
-*Run_mass_submitSL_slurm.py* - How to execute all Trials using the JobArray Slurm Job Submission Scheme
-*******************************************************************************************************
+``Run_mass_submitSL_slurm.py`` - How to execute all Trials using the JobArray Slurm Job Submission Scheme
+*********************************************************************************************************
 
 If you have use the ``JobArraysDetails['mode'] = 'JobArray'`` scheme in your MakeTrials.py script, an easy way to run them all is to run the script ``Run_mass_submitSL_slurm.py`` from the same directory as you have your MakeTrials.py script. This script will walk through all subdirectories from this point and find and run all your mass_submit.sl scripts for you automatically. All you need to do is enter ``Run_mass_submitSL_slurm.py`` into the terminal, press enter, and watch all our genetic algorithm trials be submitted to slurm. 
 
@@ -89,8 +85,8 @@ Here, after ``-o``, ``i`` specifies the job ID and ``j`` specifies the job name.
 
 .. _make_finish_files:
 
-*make_finish_files.py* - How to safely exit a genetic algorithm that not completed all generations
-**************************************************************************************************
+``make_finish_files.py`` - How to safely exit a genetic algorithm that not completed all generations
+****************************************************************************************************
 
 This program is designed to create a `finish` file in directories that contain a `Run.py` file. This `finish` file does not contain anything, but is a flag for the genetic algorithm to tell it to safely exit the algorithm once it has finished running its current generation if you would like to finish the algorithm before it has completed. 
 
@@ -98,8 +94,8 @@ To run this program, type ``make_finish_files.py`` into the terminal. This progr
 
 To read more about how the ``finish`` file work in the genetic algorithm, see :ref:`Safely Finishing the Genetic Algorithm Midway through the Algorithm <Safely_Finishing_the_GA_Midway>`
 
-*remove_finish_files.py* - Removing all ``finish`` files from many directories 
-******************************************************************************
+``remove_finish_files.py`` - Removing all ``finish`` files from many directories 
+********************************************************************************
 
 This program is designed to remove all ``finish`` files in directories that contain a ``Run.py`` file. This ``finish`` file does not contain anything, but is a flag for the genetic algorithm to tell it to safely exit the algorithm once it has finished running its current generation if you would like to finish the algorithm before it has completed. 
 
@@ -107,8 +103,8 @@ To run this program, type ``remove_finish_files.py`` into the terminal. This pro
 
 To read more about how the ``finish`` file work in the genetic algorithm, see :ref:`Safely Finishing the Genetic Algorithm Midway through the Algorithm <Safely_Finishing_the_GA_Midway>`
 
-*remove_lock_files.py* - Removing all ``ga_running.lock`` files from many directories 
-*************************************************************************************
+``remove_lock_files.py`` - Removing all ``ga_running.lock`` files from many directories 
+***************************************************************************************
 
 This program is designed to remove all ``ga_running.lock`` files in directories that contain a ``Run.py`` file. This ``ga_running.lock`` file does not contain anything, but is a flag that prevents the user from running the genetic algorithm if the genetic algorithm is already actively running. This prevents the user running the genetic algorithm twice simutaneously. However, if you cancel the genetic algorithm unsafely, this file will be left in the directory. If you know that you are not currently running the genetic algorithm, you can remove the `ga_running.lock` file from the genetic algorithm's directory. If you have many of these to remove, use this program to help you do this in one click of the button.
 

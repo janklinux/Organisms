@@ -8,7 +8,9 @@ There are also a few other programs that have been designed that may be helpful 
 
 The scripts and programs that we will be mentioned here are:
 
-*  The ``delALL.sh`` command
+.. contents::
+    :depth: 1
+    :local:
 
 What to make sure is done before running any of these scripts. 
 **************************************************************

@@ -8,10 +8,9 @@ As well as including programs for creating and running mass numbers of genetic a
 
 The scripts and programs that we will be mentioned here are:
 
-* Did_Find_LES.py
-* Did_Complete.py
-* GetLESOfAllTrials.py
-* Postprocessing_Database.py
+.. contents::
+    :depth: 1
+    :local:
 
 What to make sure is done before running any of these scripts. 
 **************************************************************
