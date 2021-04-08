@@ -6,6 +6,10 @@ Installation: Setting Up the Organisms Program and Pre-Requisites Packages
 
 In this article, we will look at how to install the genetic algorithm and all requisites for this program.
 
+.. contents::
+    :depth: 2
+    :local:
+
 Pre-requisites
 ==============
 

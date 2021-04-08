@@ -11,10 +11,10 @@ Types of Predation Operators Available and How to Use Them
 
 Several different predation operators have been implemented into this genetic algorithm. The predation operators that are available are:
 	
-	* :ref:`No_Predation_Operator_intext`**: No predation operator will be performed.
-	* :ref:`Energy_Predation_Operator_intext`: If two clusters have similar energies, one of those clusters will be removed.
-	* :ref:`IDCM_Based_Predation_Operator`: This operator will determine if two clusters are structrally identical.
-	* :ref:`SCM_Based_Predation_Operator`: This operator will determine if two clusters are structrally similar based on the structural comparison method, developed by the Garden group to improve the efficiency of global optimisation algorithms.
+* :ref:`No_Predation_Operator_intext`: No predation operator will be performed.
+* :ref:`Energy_Predation_Operator_intext`: If two clusters have similar energies, one of those clusters will be removed.
+* :ref:`IDCM_Based_Predation_Operator`: This operator will determine if two clusters are structrally identical.
+* :ref:`SCM_Based_Predation_Operator`: This operator will determine if two clusters are structrally similar based on the structural comparison method, developed by the Garden group to improve the efficiency of global optimisation algorithms.
 
 .. _No_Predation_Operator_intext:
 
