@@ -4,7 +4,7 @@ Did_Find_LES.py, Geoffrey Weal, 08/03/2019
 
 This program will determine which of your genetic algorithm trials have completed up to a certain generation. 
 '''
-import os, sys, tarfile, shutil
+import os, sys, tarfile
 
 if len(sys.argv) == 2:
     remove_trials_data = bool(sys.argv[1])
