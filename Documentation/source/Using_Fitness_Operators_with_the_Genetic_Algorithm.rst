@@ -14,10 +14,10 @@ Types of Fitness Operators Available and How to Use Them
 
 Two types of fitness operators have been implemented into this genetic algorithm. The fitness operators that are available are:
 	
-* **:ref:`Energy_Fitness_Operator`**: Here, the fitness of a cluster is determined by its energy as well as the energy of the lowest energetic and highest energetic cluster in the population and offspring pool.
-* **:ref:`_Structure_plus_Energy_Fitness_Operator`**: In this operator, the fitness of a cluster is obtained from the energy of the cluster (obtained using the **Energy** fitness operator) as well as from the similarity of the cluster, as obtained using the structural comparison method (SCM). 
+* :ref:`Energy_Fitness_Operator_intext`: Here, the fitness of a cluster is determined by its energy as well as the energy of the lowest energetic and highest energetic cluster in the population and offspring pool.
+* :ref:`Structure_plus_Energy_Fitness_Operator`: In this operator, the fitness of a cluster is obtained from the energy of the cluster (obtained using the **Energy** fitness operator) as well as from the similarity of the cluster, as obtained using the structural comparison method (SCM). 
 
-.. Energy_Fitness_Operator:
+.. _Energy_Fitness_Operator_intext:
 
 Energy Fitness Operator
 =======================
