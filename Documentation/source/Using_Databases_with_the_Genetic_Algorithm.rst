@@ -6,6 +6,10 @@ Using Databases with the Genetic Algorithm
 
 The genetic algorithm has been designed to create database files that are designed to hold data about the clusters that are created during the genetic algorithm. See `Databases in ASE <https://wiki.fysik.dtu.dk/ase/ase/db/db.html>`__ for information about how databases generally work in ASE. 
 
+.. contents::
+    :depth: 2
+    :local:
+
 Databases in Organisms
 ----------------------
 
