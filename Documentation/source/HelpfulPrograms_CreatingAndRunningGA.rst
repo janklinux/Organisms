@@ -6,14 +6,9 @@ Helpful Programs to Create and Run the Genetic Algorithm
 
 As well as the genetic algorithm, we have included a bunch of programs that can be used to create all the scripts that are needed to run the genetic algorithm. In this articles, we will introduce all of the program that can be used to create these scripts and to run them all in mass. Example files for running many of these programs can be found in Examples/CreateSets. Some of these programs can also be run by typing the program you want to run into the terminal from whatever directory you are in. 
 
-The scripts and programs that we will be mentioned here are:
-
-* get_newly_initilised_population.py
-* Run_submitSL_slurm.py
-* Run_mass_submitSL_slurm.py
-* make_finish_files.py
-* remove_finish_files.py
-* remove_lock_files.py
+.. contents:: The scripts and programs that we will be mentioned here are:
+    :depth: 3
+    :local: True
 
 There is also information on how to generate multiple trials of your genetic algorithm experiment on mass at :ref:`MakeTrials.py - Creating Multiple, Repeated Genetic Algorithm Trials <Using_MakeTrials>`. 
 
