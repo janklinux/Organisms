@@ -11,10 +11,12 @@ Types of Predation Operators Available and How to Use Them
 
 Several different predation operators have been implemented into this genetic algorithm. The predation operators that are available are:
 	
-	* **Off**: No predation operator will be performed.
-	* **Energy Predation**: If two clusters have similar energies, one of those clusters will be removed.
-	* **IDCM-based Predation**: This operator will determine if two clusters are structrally identical.
-	* **SCM-based Predation**: This operator will determine if two clusters are structrally similar based on the structural comparison method, developed by the Garden group to improve the efficiency of global optimisation algorithms.
+	* **:ref:`No_Predation_Operator`**: No predation operator will be performed.
+	* **:ref:`Energy_Predation_Operator`**: If two clusters have similar energies, one of those clusters will be removed.
+	* **:ref:`IDCM_Based_Predation_Operator`**: This operator will determine if two clusters are structrally identical.
+	* **:ref:`SCM_Based_Predation_Operator`**: This operator will determine if two clusters are structrally similar based on the structural comparison method, developed by the Garden group to improve the efficiency of global optimisation algorithms.
+
+.. _No_Predation_Operator:
 
 No Predation Operator
 =====================
@@ -26,6 +28,8 @@ To use this, in your Run.py or MakeTrials.py script, set
 .. code-block:: python
 
 	Diversity_Information = {'Predation Operator: 'Off'}
+
+.. _Energy_Predation_Operator:
 
 Energy Predation Operator
 =========================
@@ -88,6 +92,8 @@ An example of how these settings are implimented into your Run.py or MakeTrials.
 
 	Predation_Information = {'Predation Operator': 'Energy', 'mode': 'comprehensive', 'minimum_energy_diff': 0.025, 'type_of_comprehensive_operator': 'energy'}
 
+.. _IDCM_Based_Predation_Operator:
+
 IDCM-based Predation Operator
 =============================
 
@@ -133,7 +139,7 @@ There are two forms of the SCM that can be used in this implementation of the ge
 
 To use this predation operator in your Run.py or MakeTrials.py script, you will want to add three setting in the ``predation_information`` variable is required:
 
-* **CNA scheme** (*str.*): This is the type of CNA scheme you would like to use, be it the The Total Structural Comparison Method (T-SCM) or the The Atomic Structural Comparison Method (A-SCM).
+* **SCM scheme** (*str.*): This is the type of SCM scheme you would like to use, be it the The Total Structural Comparison Method (T-SCM) or the The Atomic Structural Comparison Method (A-SCM).
 
 The CNA required the user to input a value of rCut, a cutoff value that specifies the maximum distance between atoms to be considered neighbours or "bonded". There are two ways that this can be specified in the ``predation_information`` variable. If you want to sample just one value of rCut, the variable you want to add is:
 
@@ -163,13 +169,13 @@ An example of how these settings are implemented into your Run.py or MakeTrials.
 
 .. code-block:: python
 
-	predation_information = {'Predation Operator': 'SCM', 'CNA scheme': 'T-SCM', 'rCut_high': 3.2, 'rCut_low': 2.9, 'rCut_resolution': 0.05}
+	predation_information = {'Predation Operator': 'SCM', 'SCM scheme': 'T-SCM', 'rCut_high': 3.2, 'rCut_low': 2.9, 'rCut_resolution': 0.05}
 
 If you want to perform your SCM predation operator on gold (with a lattice constant of 4.07 Å) sampling 78 points between the 1 + 1/3 n.n.d and 1 + 2/3 n.n.d (where n.n.d is the nearest neighbour distance), This is how you would enter this into your Run.py or MakeTrials.py script:
 
 .. code-block:: python
 
-	predation_information = {'Predation Operator': 'SCM', 'CNA scheme': 'T-SCM', 'lattice_constant': 4.07, 'nn_high': 1.0 + (2.0/3.0), 'n_low': 1.0 + (1.0/3.0), 'nn_resolution': 78}
+	predation_information = {'Predation Operator': 'SCM', 'SCM scheme': 'T-SCM', 'lattice_constant': 4.07, 'nn_high': 1.0 + (2.0/3.0), 'n_low': 1.0 + (1.0/3.0), 'nn_resolution': 78}
 
 
 Writing Your Own Predation Operators for the Genetic Algorithm

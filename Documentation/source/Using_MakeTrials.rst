@@ -10,6 +10,10 @@ In this article, we will look at how to use some of the tools that have been dev
 
 In the next article (:ref:`Helpful Programs for Gathering data and Post-processing Data <HelpfulPrograms_GatherAndPostprocessingData>`) we describe a set of scripts to analyse the data from the multiple genetic algorithms.
 
+.. contents::
+    :depth: 2
+    :local:
+
 What to make sure is done before running the MakeTrials.py program. 
 *******************************************************************
 

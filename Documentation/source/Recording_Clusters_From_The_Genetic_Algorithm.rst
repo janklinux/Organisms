@@ -6,6 +6,10 @@ Recording Clusters From The Genetic Algorithm
 
 It is possible to record the types of clusters that are created during the genetic algorithm. In many cases, the user doesn't want to record all the clusters that are created by the genetic algorithm, but instead record the more important ones, such as the lowest energetic clusters. This algorithm is even designed to prevent recording replicas of clusters that are the same with respect to the diversity scheme you have chosen. 
 
+.. contents::
+    :depth: 2
+    :local:
+
 All of the parameters for this components are gathered together in a dictionary, called ``ga_recording_information``. This is passed into a class called the Recording_Cluster. 
 
 These parameters are:

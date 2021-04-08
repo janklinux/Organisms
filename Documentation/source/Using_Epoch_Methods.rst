@@ -7,6 +7,10 @@ An epoch method is designed to reset the population with a set of randomly gener
 
 In this article, we describe the types of epoch schemes that are available, as well as other settings that are avilable that allow the epoch method to do other things
 
+.. contents::
+    :depth: 2
+    :local:
+
 Types of Epoch Methods
 ======================
 

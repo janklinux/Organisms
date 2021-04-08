@@ -6,6 +6,9 @@
 
 In this article, we will look at how to write the local optimisation method for the genetic algorithm. 
 
+.. contents::
+    :depth: 2
+    :local:
 
 What is the Minimisation_Function
 *********************************
