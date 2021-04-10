@@ -46,7 +46,7 @@ The amount of time that ``Run_mass_submitSL_slurm.py`` will wait before attempti
 See :ref:`Run_mass_submitSL_slurm.py - How to execute all Trials using the JobArray Slurm Job Submission Scheme <Run_mass_submitSL_slurm_py>` for more information about how ``Run_mass_submitSL_slurm.py`` is designed and works and the settings that you may need to change in ``Run_mass_submitSL_slurm.py`` so that it works for you in slurm. 
 
 I found that when the fitness operator gave a ``ZeroDivisionError`` error when trying to obtain the ``CNA_fitness_contribution`` or the energy fitness value of ``rho_i``
-*****************************************************************************************************************************************************************************
+**************************************************************************************************************************************************************************
 
 An example of this type of error is given below for a ``ZeroDivisionError`` error for the ``CNA_fitness_contribution`` value.
 
@@ -58,7 +58,29 @@ An example of this type of error is given below for a ``ZeroDivisionError`` erro
 
 Here, either the population has no similarity span (or no energy span). In this example, this is because the cluster in the population with the highest similarity value has the same similarity as the cluster in the population with the lowest similarity value (i.e. ``max_similarity`` is equal to ``min_minimarity``). There has been an update that should prevent this from occur. However, if this problem does arise, the easiest way to potentially solve this problem is to lower your input value for ``rounding_criteria``
 
+I can not run programs from ``Subsidiary_Programs``, ``Postprocessing_Programs``, or ``Helpful_Programs``, get the error when I run a program ``/usr/bin/env: python3: No such file or directory``
+**************************************************************************************************************************************************************************************************
 
+All programs that are used to pre- and post-processing Organsims data begins with the line
 
+.. code-block:: bash
+	#!/usr/bin/env python3
 
+This will make sure that these programs are running in python3, rather than in python2. If you see the error:
+
+``/usr/bin/env: python3: No such file or directory``
+
+This means that either you have not installed python3 on your computer, or you have not loaded the python3 module in slurm.
+
+If you are running a program in slurm, you load python by typing into the terminal
+
+.. code-block:: bash
+	module load python3_version
+
+where ``python3_version`` is the version of python3 you want to use. To see what versions of python3 are available to you in slurm, type into the teriminal
+
+.. code-block:: bash
+	module avail python
+
+This will give a list of versions of python3 you can use. Choose the one you would like to use and type this into the terminal as ``module load python3_version``, where ``python3_version`` is the name of the version of python3 you would like to use.
 
