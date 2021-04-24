@@ -51,7 +51,7 @@ Welcome to the Otago Research Genetic Algorithm for Nanoclusters, Including Stru
 
 Group page: https://blogs.otago.ac.nz/annagarden/
 
-Page to cite with work from: Development of a Structural Comparison Method to Promote Exploration of the Potential Energy Surface in the Global Optimisation of Nanoclusters; Geoffrey R. Weal, Samantha M. McIntyre, and Anna L. Garden; JCIM; in submission stage.
+Page to cite with work from: Development of a Structural Comparison Method to Promote Exploration of the Potential Energy Surface in the Global Optimisation of Nanoclusters; Geoffrey R. Weal, Samantha M. McIntyre, and Anna L. Garden; JCIM; `DOI: 10.1021/acs.jcim.0c01128 <https://dx.doi.org/10.1021/acs.jcim.0c01128>`_.
 
 What is this Documentation about?
 =================================

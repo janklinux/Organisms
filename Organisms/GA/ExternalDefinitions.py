@@ -7,22 +7,11 @@ This python script is designed to hold subsidery definitions used by this Geneti
 
 from ase import Atom, Atoms
 
-class atom_single_connection:
-	"""
-	This class is designed to record all the atoms an atom in a cluster is bonded/neighboured to, where a bond is
-	defined as a atom-atom distance less than max_distance_between_atoms.
-	:param atom: The dir of the atom in the cluster
-	:type  atom: int
-	"""
-	def __init__(self,atom):
-		self.atom = atom
-		self.bonded_to = [] # The dir of the atoms that this self.atom is bonded to
-
-def get_distance(atom1,atom2):
-	xx = atom1[0] - atom2[0]
-	yy = atom1[1] - atom2[1]
-	zz = atom1[2] - atom2[2]
-	return (xx*xx + yy*yy + zz*zz) ** 0.5
+#def get_distance(atom1,atom2):
+#	xx = atom1[0] - atom2[0]
+#	yy = atom1[1] - atom2[1]
+#	zz = atom1[2] - atom2[2]
+#	return (xx*xx + yy*yy + zz*zz) ** 0.5
 
 def Exploded(cluster, max_distance_between_atoms):
 	"""
@@ -42,19 +31,21 @@ def Exploded(cluster, max_distance_between_atoms):
 	First the neighbours of all atoms in the cluster are recorded. These are all the atoms that have a bond length less than max_distance_between_atoms.
 	'''
 	# Initialise the list neighbours_list
+	'''
 	neighbours_list = []
 	for ii in range(len(cluster)):
 		neighbours_list.append(atom_single_connection(ii))
+	'''
+	neighbours_list = {ii: [] for ii in range(len(cluster))}
 	# find and record the bonds for each atom in the cluster.
-	cluster_positions = cluster.arrays['positions']
 	for ii in range(len(neighbours_list)):
 		for jj in range(ii+1,len(neighbours_list)): # from ii+1 to len(neighbours_list) as to prevent double recording of bonds.
-			distance = get_distance(cluster_positions[neighbours_list[ii].atom],cluster_positions[neighbours_list[jj].atom]) # obtain the distance between two atoms
+			distance = cluster.get_distance(neighbours_list[ii].atom,neighbours_list[jj].atom)
 			# if distance < max_distance_between_atoms, the neighbours_list ii and jj are bonded together,
 			# so record this in the instance of the class atom_single_connection for this atom
 			if distance < max_distance_between_atoms:
-				neighbours_list[ii].bonded_to.append(jj)
-				neighbours_list[jj].bonded_to.append(ii)
+				neighbours_list[ii].append(jj)
+				neighbours_list[jj].append(ii)
 	'''
 	We now check to see that every atom is connect to a single entity (i.e. a cluster). This proceedure will
 	make sure that the cluster is not in pieces.
@@ -70,11 +61,11 @@ def Exploded(cluster, max_distance_between_atoms):
 		atom_to_explore = Cluster_paths.pop(0)
 		if atom_to_explore in atoms_not_reached:
 			atoms_not_reached.remove(atom_to_explore)
-		Cluster_paths += neighbours_list[atom_to_explore].bonded_to
-		while not neighbours_list[atom_to_explore].bonded_to == []:
-			atoms_bonded_to = neighbours_list[atom_to_explore].bonded_to[0]
-			neighbours_list[atoms_bonded_to].bonded_to.remove(atom_to_explore)
-			neighbours_list[atom_to_explore].bonded_to.remove(atoms_bonded_to)
+		Cluster_paths += neighbours_list[atom_to_explore]
+		while not neighbours_list[atom_to_explore] == []:
+			atoms_bonded_to = neighbours_list[atom_to_explore][0]
+			neighbours_list[atoms_bonded_to].remove(atom_to_explore)
+			neighbours_list[atom_to_explore].remove(atoms_bonded_to)
 
 	if atoms_not_reached == []:
 		return False
