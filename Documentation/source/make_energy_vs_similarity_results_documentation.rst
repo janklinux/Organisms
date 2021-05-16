@@ -18,6 +18,12 @@ In Organisms, we have a function that is able to describe the structural similar
 
 We have created the *make_energy_vs_similarity_results.py* program that processes the data from your genetic algorithm and gives you energy vs. similarity plots that describes the types of cluster that were created during the genetic algorithm and plots them in the style of a PES plot. In this page, we will describe how to use this program, as well as describe the types of plots that you will obtain from this program. 
 
+See Development of a Structural Comparison Method to Promote Exploration of the Potential Energy Surface in the Global Optimisation of Nanoclusters; Geoffrey R. Weal, Samantha M. McIntyre, and Anna L. Garden; JCIM; `DOI: 10.1021/acs.jcim.0c01128 <https://dx.doi.org/10.1021/acs.jcim.0c01128>`_ for more information about how these energy vs similarity plots can be used to help you understand how the Organisms genetic algorithm program is running. 
+
+.. image:: https://img.shields.io/badge/Citation-click%20here-green.svg
+   :target: https://dx.doi.org/10.1021/acs.jcim.0c01128
+   :alt: Citation
+
 Requirements for using the *make_energy_vs_similarity_results.py* Program
 *************************************************************************
 
