@@ -195,8 +195,10 @@ If it is taking a while for a cluster to be written, take a look at the CNA prof
 
 ``{'CNA_profile': [Counter({(4, 3, 3): 78, (4, 2, 2): 66, (5, 5, 5): 61, (3, 2, 2): 49, (2, 1, 1): 42, (5, 4, 4): 39, (3, 1, 1): 36, (2, 0, 0): 27, (4, 2, 1): 22, (3, 0, 0): 4, (1, 0, 0): 3, (4, 1, 1): 3})], 'name': 1}``
 
+You will notice that all the CNA signatures (given in brackets, e.g. ``(4, 3, 3)``) have quite low numbers. For two atoms that are within 'bonding distance' of each other, the first number indicates the number of atoms that neighbour both these atoms. There are only so many atoms that can be confined near two atoms. Often this first value is between 1 to 5. 
+
 If you have entries that look more like this
 
 ``{'CNA_profile': [Counter({(113, 225, 208): 4753})], 'name': 1}``
 
-This is a sign that you have set your ``rCut`` value way to high, or somewhere in your ``Run_energy_vs_similarity_script.py`` script you have accidentally changed your ``rCut`` value to a very high value. Make sure that you set ``rCut`` to a value somewhere in between the first and second nearest neighbour values (ideally to half way between these values). 
+where you have very large numbers in your CNA signatures, this is a sign that you have set your ``rCut`` value way to high, or somewhere in your ``Run_energy_vs_similarity_script.py`` script you have accidentally changed your ``rCut`` value to a very high value. Make sure that you set ``rCut`` to a value somewhere in between the first and second nearest neighbour values (ideally to half way between these values). 
