@@ -14,7 +14,7 @@ Authors: Geoffrey R. Weal and Dr. Anna L. Garden (University of Otago, Dunedin, 
 
 Group page: https://blogs.otago.ac.nz/annagarden/
 
-Page to cite with work from: *Development of a Structural Comparison Method to Promote Exploration of the Potential Energy Surface in the Global Optimisation of Nanoclusters*; Geoffrey R. Weal, Samantha M. McIntyre, and Anna L. Garden; JCIM; in submission stage.
+Page to cite with work from: ``Development of a Structural Comparison Method to Promote Exploration of the Potential Energy Surface in the Global Optimisation of Nanoclusters, Geoffrey R. Weal, Samantha M. McIntyre, and Anna L. Garden, J. Chem. Inf. Model. 2021, 61, 4, 1732–1744`` [DOI: 10.1021/acs.jcim.0c01128](https://doi.org/10.1021/acs.jcim.0c01128)
 
 ## What is Organisms
 
