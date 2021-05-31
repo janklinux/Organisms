@@ -61,7 +61,7 @@ class Crossover:
 			exit('This program will finish without completing')
 		# -------------------------------------------- #
 
-	def run(self,run_input):
+	def run(self, run_input):
 		"""
 		Run this the Mating Proceedure and gives an offspring.
 
@@ -78,7 +78,7 @@ class Crossover:
 		#self.centre_offspring_at_centre_of_cell(offspring)
 		return offspring
 
-	def pickParentsFromThePopulation(self,population):
+	def pickParentsFromThePopulation(self, population):
 		"""
 		This definition will pick the parents for mating.
 
@@ -94,7 +94,7 @@ class Crossover:
 		parent2 = population[pairPos[1]].deepcopy()
 		return [parent1, parent2]
 
-	def roulette(self,population):
+	def roulette(self, population):
 		"""
 		Performed the roulette wheel method to obtain the parents for a Mating proceedure
 
@@ -134,16 +134,17 @@ class Crossover:
 			exit('This program will finish without completing')
 		return index_pair
 
-	def tournament(self,population):
+	def tournament(self, population):
 		"""
-		Performed the tournament method to obtain the parents for a Mating proceedure
+		Performed the tournament method to obtain the parents for a Mating procedure
 
 		Reference: https://pubs.rsc.org/en/content/articlepdf/2003/dt/b305686d
 
 		:param population: This is the population to choose clusters from to mate together. 
 		:type  population: Organisms.GA.Population
 		
-		:returns: Will return a tuple of two integers that represent the indices of clusters in the population to use as parent to mate together to give a new offspring.
+		:returns: Will return a tuple of two integers that represent the indices of clusters in the population to use
+				  as parent to mate together to give a new offspring.
 		:rtypes: [int, int]
 		"""
 		number_of_clusters_in_tournament = X
@@ -208,7 +209,7 @@ class Crossover:
 	#################################################################################
 	#################################################################################
 
-	def Cut_and_Splice_Devon_and_Ho(self,parents):
+	def Cut_and_Splice_Devon_and_Ho(self, parents):
 		"""
 		This definition is designed to perform the Cut and Splice Method as specified by 
 		Devon and Ho to mate the parents to give the offspring. The method works as follows:
@@ -229,7 +230,7 @@ class Crossover:
 		offspring = self.mate_Cut_and_Splice(parents) # Perform the Cut and Splice Method
 		return offspring
 
-	def rotate(self,cluster):
+	def rotate(self, cluster):
 		"""
 		Rotate the cluster by some random angle in the theta and phi directions.
 		
@@ -239,15 +240,15 @@ class Crossover:
 		"""
 		#randomly select the value of theta and phi. Change to degrees since change in ase 3.14.0
 		# see https://mathworld.wolfram.com/EulerAngles.html for how the angles work.
-		phi = rand.uniform(0,360.0)
-		theta = rand.uniform(0,180.0) # angle theta in [0,pi]
-		psi = rand.uniform(0,360.0)
+		phi = rand.uniform(0, 360.0)
+		theta = rand.uniform(0, 180.0) # angle theta in [0,pi]
+		psi = rand.uniform(0, 360.0)
 		# Create the matrix representation to rotate the cluster in the following way:
 		#	Look at Euler Angles about this: http://mathworld.wolfram.com/EulerAngles.html
 		cluster.euler_rotate(phi=phi, theta=theta, psi=psi, center=(0, 0, 0)) # changed to allign with format from ase >= 3.14.0
 		#return cluster
 
-	def mate_Cut_and_Splice(self,parents):
+	def mate_Cut_and_Splice(self, parents):
 		"""
 		This method will perform the mating proceedure as specified by the user.
 		This can been designed to be used with multiple parents, however currently it is set up for 2 parents.
@@ -288,7 +289,7 @@ class Crossover:
 		#self.mate_Cut_and_Splice_error_checking_2(elemental_makeup_of_parents,offspring) # Error Checking. Uncomment this if you are ever editing the crossover method
 		return offspring
 
-	def mate_Cut_and_Splice_error_checking_1(self,parents):
+	def mate_Cut_and_Splice_error_checking_1(self, parents):
 		"""
 		This is a method for checking if there are any issues with the Cut_and_splice method. 
 
@@ -316,7 +317,7 @@ class Crossover:
 		return elemental_makeup_of_parents
 
 
-	def mate_Cut_and_Splice_error_checking_2(self,elemental_makeup_of_parents,offspring):
+	def mate_Cut_and_Splice_error_checking_2(self, elemental_makeup_of_parents, offspring):
 		"""
 		This is a method for checking if there are any issues with the Cut_and_splice method. 
 
@@ -344,7 +345,7 @@ class Crossover:
 			exit('This program will finish without completing')
 
 
-	def half_index_weighted_method(self,parents):
+	def half_index_weighted_method(self, parents):
 		"""
 		This method will determine how to cut the cluster based on the atom to divide from, where the atoms have been numbered in order of the z axis.
 
@@ -386,7 +387,7 @@ class Crossover:
 		half_index = int(self.size_of_clusters*(1.0/2.0))
 		return half_index
 
-	def half_index_custom_method(self,cross_type):
+	def half_index_custom_method(self, cross_type):
 		"""
 		This method will determine how to cut the cluster based on the atom to divide from, where the atoms have been numbered in order of the z axis.
 
@@ -400,7 +401,7 @@ class Crossover:
 		:returns: The atom number in the cluster to cut the atom.
 		:rtype: int
 		"""
-		percentage = cross_type.replace('CAS_custom_','')
+		percentage = cross_type.replace('CAS_custom_', '')
 		try:
 			percentage = float(percentage)
 		except ValueError:
@@ -411,5 +412,3 @@ class Crossover:
 			exit('This program will finish without completing')
 		half_index = int(self.size_of_clusters*(percentage/100.0))
 		return half_index
-
-

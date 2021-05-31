@@ -1,5 +1,4 @@
 import copy
-import random
 import sys
 import time
 import numpy as np
@@ -104,7 +103,7 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_
 	np.random.seed(int(time.time()))
 	if cluster_makeup is not None and (cluster_to_mutate is None or percentage_of_cluster_to_randomise is None):
 		# Turn cluster_makeup into a chemical formula string
-		print('Mutant transformed', file=sys.stderr)
+		print('Mutant transformed', file=sys.stdout)
 		cluster_chemical_formula = '' 
 		for element, no_of_element in cluster_makeup.items():
 			max_atom_change = int(np.floor(np.minimum(no_of_element, 5)))
@@ -133,7 +132,7 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_
 			swapping_prob = 0.75
 
 		if np.random.random() < swapping_prob:  # my additional idea
-			print('Mutant swapped', file=sys.stderr)
+			print('Mutant swapped', file=sys.stdout)
 			symbols = dict()
 			for idx, species in enumerate(structure.species):
 				if species.name not in symbols:
@@ -142,7 +141,7 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_
 				else:
 					symbols[species.name].append(idx)
 
-			if 'Co' in structure.species or 'Ni' in structure.species:
+			if 'Co' in symbols or 'Ni' in symbols:
 				min_species = 1
 			else:
 				min_species = np.amin([[str(s) for s in structure.species].count(str(species))
@@ -166,7 +165,7 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_
 
 		else:
 			# The following will pick random atoms in the cluster to randomise, original code
-			print('Mutant randomized', file=sys.stderr)
+			print('Mutant randomized', file=sys.stdout)
 			no_of_atoms_to_randomise = int(np.ceil(float(nAtoms) * (float(percentage_of_cluster_to_randomise) / 100.0)))
 			all_atoms_in_cluster = [int(ia) for ia in range(nAtoms)]
 			atoms_to_randomise = []
@@ -198,9 +197,9 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_
 	# within the defined cube with sides = r_ij*scale
 	for index in atoms_to_randomise:
 		while True:
-			x_position = boxtoplaceinlength*uniform(0,1)
-			y_position = boxtoplaceinlength*uniform(0,1)
-			z_position = boxtoplaceinlength*uniform(0,1)
+			x_position = boxtoplaceinlength * uniform(0.25, 0.75)  # janK: change from (0, 1)
+			y_position = boxtoplaceinlength * uniform(0.25, 0.75)
+			z_position = boxtoplaceinlength * uniform(0.25, 0.75)
 			position = [x_position, y_position, z_position]
 			# check the cluster to see that this new random position will not cause this atom 
 			# to be in the same place as any atom in the cluster currently
