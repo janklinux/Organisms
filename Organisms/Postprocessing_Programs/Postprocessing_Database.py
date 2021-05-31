@@ -1,16 +1,15 @@
-#!/usr/bin/env python3
-'''
+"""
 Postprocessing_Database.py, Geoffrey Weal, 26/9/2020
 
 This program is designed to break down the database from the GA_Recording_System into manageable chunks if the original database was too large to process.
-'''
+"""
+
 import os, sys
 import numpy as np
 from shutil import rmtree
 from math import ceil
-
-#from ase.db.row import row2dct
 from ase.db import connect
+
 
 def get_distance(atom1,atom2):
 	diff_x = atom1.x - atom2.x
@@ -35,30 +34,30 @@ def compared_cluster_interatomic_distances(cluster_interatomic_distances_1, clus
 				exit('Error')
 
 def get_rotation_matrix(i_v, unit=None):
-    # From http://www.j3d.org/matrix_faq/matrfaq_latest.html#Q38
-    if unit is None:
-        unit = (0.0,0.0,1.0)
-    # Normalize vector length
-    i_v /= np.linalg.norm(i_v)
-    # Get axis
-    uvw = np.cross(i_v, unit)
-    # compute trig values - no need to go through arccos and back
-    rcos = np.dot(i_v, unit)
-    rsin = np.linalg.norm(uvw)
-    #normalize and unpack axis
-    if not np.isclose(rsin, 0):
-        uvw /= rsin
-    u, v, w = uvw
-    # Compute rotation matrix - re-expressed to show structure
-    return (
-        rcos * np.eye(3) +
-        rsin * np.array([
-            [ 0, -w,  v],
-            [ w,  0, -u],
-            [-v,  u,  0]
-        ]) +
-        (1.0 - rcos) * uvw[:,None] * uvw[None,:]
-    )
+	# From http://www.j3d.org/matrix_faq/matrfaq_latest.html#Q38
+	if unit is None:
+		unit = (0.0, 0.0, 1.0)
+	# Normalize vector length
+	i_v /= np.linalg.norm(i_v)
+	# Get axis
+	uvw = np.cross(i_v, unit)
+	# compute trig values - no need to go through arccos and back
+	rcos = np.dot(i_v, unit)
+	rsin = np.linalg.norm(uvw)
+	#normalize and unpack axis
+	if not np.isclose(rsin, 0):
+		uvw /= rsin
+	u, v, w = uvw
+	# Compute rotation matrix - re-expressed to show structure
+	return (
+		rcos * np.eye(3) +
+		rsin * np.array([
+			[ 0, -w,  v],
+			[ w,  0, -u],
+			[-v,  u,  0]
+		]) +
+		(1.0 - rcos) * uvw[:,None] * uvw[None,:]
+	)
 
 def rotate_cluster_to_major_inertia_vector(cluster):
 	"""
@@ -122,7 +121,7 @@ def get_input_str(input_message,options,default_input):
 		if get_input in options:
 			return str(get_input)
 		print('Error, you must input one of the following options: '+', '.join(options))
-		pritn('Try entering in an option again.')
+		print('Try entering in an option again.')
 
 number_of_sys_argvs = len(sys.argv)
 
@@ -139,7 +138,7 @@ elif number_of_sys_argvs == 3:
 	sort_clusters_by = str(sys.argv[2])
 	print('Sorting clusters by: '+str(sort_clusters_by))
 
-if not sort_clusters_by in sort_cluster_keys:
+if sort_clusters_by not in sort_cluster_keys:
 	print('Error in Postprocessing_Database.py')
 	print('Your input for sort_clusters_by must be one of either: '+str(sort_cluster_keys))
 	print('Your input for sort_clusters_by: '+str(sort_clusters_by))
@@ -147,8 +146,8 @@ if not sort_clusters_by in sort_cluster_keys:
 	exit('This program will finish without completing.')
 
 # ----------------------------------------------------------------------------------------------------------------------------
-
-database_name = 'GA_Recording_Database'
+db = None
+database_name = 'Recorded_Data/GA_Recording_Database'
 if os.path.exists(database_name+'.db'):
 	db = connect(database_name+'.db')
 else:

@@ -1,15 +1,16 @@
 import re
 from random import randrange, uniform
 from ase import Atoms
-
 from Organisms.GA.Types_Of_Mutations import moveMutate, homotopMutate, randomMutate
 from Organisms.GA.Population import Population
 from Organisms.GA.Cluster import Cluster
 from Organisms.GA.ExternalDefinitions import InclusionRadiusOfCluster
 
-population_type_example = Population('example',-1,user_initialised_population_folder=None,write_data=False)
+
+population_type_example = Population('example', -1, user_initialised_population_folder=None, write_data=False)
 cluster_type_example = Cluster()
 atoms_type_example = Atoms()
+
 
 def isfloat(element):
 	"""
@@ -26,23 +27,26 @@ def isfloat(element):
 	else:
 		return True
 
+
 class Mutation:
 	"""
-	This class contains all the information and proceedures required to perform a Mutation. 
+	This class contains all the information and procedures required to perform a Mutation.
 
-	:param mutation_types: Contains the information about the mutations that the user would like to perform. See Manual for more information about this.
+	:param mutation_types: Contains the information about the mutations that the user would like to perform.
+	See Manual for more information about this.
 	:type  mutation_types: [(str, float),...]
-	:param r_ij: The maximum distance that should be between atoms to be considered bonded. This value should be as large a possible, to reflected the longest bond possible between atoms in the cluster.
+	:param r_ij: The maximum distance that should be between atoms to be considered bonded.
+	This value should be as large a possible, to reflected the longest bond possible between atoms in the cluster.
 	:type  r_ij: float
 	:param vacuum_to_add_length: The amount of vacuum to place around the cluster
 	:type  vacuum_to_add_length: float
 	"""
-	def __init__(self,mutation_types,r_ij,vacuum_to_add_length):
+	def __init__(self, mutation_types, r_ij, vacuum_to_add_length):
 		self.mutation_types = mutation_types
-		#self.r_ij = r_ij
-		#self.vacuum_to_add_length = vacuum_to_add_length
+		# self.r_ij = r_ij
+		# self.vacuum_to_add_length = vacuum_to_add_length
 		self.check(r_ij)
-		self.change_mutation_chances() # update the values in self.mutation_types into the format used by Mutation class.
+		self.change_mutation_chances()  # update self.mutation_types into the format used by Mutation class.
 
 	def check(self, r_ij):
 		"""
@@ -57,8 +61,8 @@ class Mutation:
 		for mutation_type in mutation_types:
 			if mutation_type.startswith('move'):
 				if mutation_type == 'move':
-					self.dist_to_move = float(r_ij)*0.5
-				elif mutation_type.startswith("move_") and isfloat(mutation_type.replace("move_",'')):
+					self.dist_to_move = float(r_ij) * 0.5
+				elif mutation_type.startswith("move_") and isfloat(mutation_type.replace("move_", '')):
 					self.dist_to_move = float(mutation_type.replace("move_",''))
 				else:
 					print('Error in class MutationProcedure, in MutationProcedure.py')
@@ -77,9 +81,10 @@ class Mutation:
 					exit('This program will finish without completing.')
 			elif mutation_type.startswith('random'):
 				pass
-				#if self.boxtoplaceinlength == None:
+				# if self.boxtoplaceinlength == None:
 				#	print('Error in def mutation, in Class MutationProceedure, in MutationProceedure.py.')
-				#	print('If you want to use the "random" mutation method, you need to specify a value for the boxtoplaceinlength variable.')
+				#	print('If you want to use the "random" mutation method, you need to specify a value
+			    #	for the boxtoplaceinlength variable.')
 				#	print('Check this and see if you need to set a value for the boxtoplaceinlength variable.')
 				#	exit('This program will finish without completing.')
 			elif mutation_type.startswith("random_"):
@@ -117,7 +122,7 @@ class Mutation:
 		end_point = 0.0
 		for mutation_type in self.mutation_types:
 			end_point += mutation_type[1]
-			end_point = round(end_point,12)
+			end_point = round(end_point, 12)
 			mutation_type[1] = end_point
 		if not self.mutation_types[-1][1] == 1.0:
 			print('Error: The total chance of picking any mutation_type does not equal 1.')
@@ -128,7 +133,7 @@ class Mutation:
 			import pdb; pdb.set_trace()
 			exit('This program will finish without completing.')
 
-	def run(self,run_input,cell_length=None,vacuum_length=None):
+	def run(self, run_input, cell_length=None, vacuum_length=None):
 		'''
 		This definition will run the Mutation Proceedure. 
 
@@ -148,7 +153,7 @@ class Mutation:
 		else:
 			print('Error in def run of class Mutation.')
 			print('run_input must be either a population or a specific cluster (of type ASE.Atoms or Cluster).')
-			print('run_inpu: '+str(run_inpu))
+			print('run_inpu: '+str(run_input))
 			print('Check this')
 			import pdb; pdb.set_trace()
 			exit('This program will finish without completing.')
@@ -156,23 +161,25 @@ class Mutation:
 		# Pick the type of mutation method to use
 		mutation_method = self.get_mutation_type()
 		# perform the mutation. 
-		mutant = self.mutation(mutation_method,cluster_to_mutate,cell_length,vacuum_length)
+		mutant = self.mutation(mutation_method, cluster_to_mutate, cell_length,vacuum_length)
 		# respecify the vacuum around the cluster to that its distance is vacuumAdd
-		lengthOfCell = 2.0*InclusionRadiusOfCluster(mutant) + vacuum_length
-		cell = [lengthOfCell,lengthOfCell,lengthOfCell]
+		lengthOfCell = 2.0 * InclusionRadiusOfCluster(mutant) + vacuum_length
+		cell = [lengthOfCell, lengthOfCell, lengthOfCell]
 		mutant.set_cell(cell)
 		mutant.center() # centre the cluster within this unit cell
-		# return the mutant, as well as the mutation method that was performed. 
-		if not len(mutant) == len(cluster_to_mutate):
-			print('Error in def run, in Mutation.py')
-			print('The offspring contains '+str(len(mutant))+' atoms, but should contain '+str(len(cluster_to_mutate)))
-			print('Check this')
-			import pdb; pdb.set_trace()
-			print('This program will finish without completing')
-			exit()
+		# return the mutant, as well as the mutation method that was performed.
+
+		# if not len(mutant) == len(cluster_to_mutate):
+		# 	print('Error in def run, in Mutation.py')
+		# 	print('The offspring contains '+str(len(mutant))+' atoms, but should contain '+str(len(cluster_to_mutate)))
+		# 	print('Check this')
+		# 	import pdb; pdb.set_trace()
+		# 	print('This program will finish without completing')
+		# 	exit()
+
 		return mutant, mutation_method
 
-	def pickClusterFromThePopulation(self,population):
+	def pickClusterFromThePopulation(self, population):
 		"""
 		This definition will pick the cluster from the population to mutate.
 
@@ -183,7 +190,7 @@ class Mutation:
 		:rtypes: Cluster
 
 		"""
-		index = randrange(0,len(population))
+		index = randrange(0, len(population))
 		cluster_to_mutate = population[index].deepcopy()
 		return cluster_to_mutate
 
@@ -196,21 +203,21 @@ class Mutation:
 
 		"""
 		if not len(self.mutation_types) == 1:
-			chance_of_type_of_mutation = uniform(0,1)
+			chance_of_type_of_mutation = uniform(0, 1)
 		else:
-			chance_of_type_of_mutation = 0 # dont need to perform uniform(0,1) if you only have one mutation_method
+			chance_of_type_of_mutation = 0  # dont need to perform uniform(0,1) if you only have one mutation_method
 		for mutation_type, mutation_echelon in self.mutation_types:
 			if chance_of_type_of_mutation <= mutation_echelon:
 				return mutation_type
 		print('Error in def get_mutation_type in class Mutation_Procedure, in MutationProcedure.py')
 		print('Somehow, I think chance_of_type_of_mutation is greater than 1???')
-		print('chance_of_type_of_mutation = '+str(chance_of_type_of_mutation))
-		print('self.mutation_types = '+str(self.mutation_types))
+		print('chance_of_type_of_mutation = ' + str(chance_of_type_of_mutation))
+		print('self.mutation_types = ' + str(self.mutation_types))
 		print('Check this')
 		import pdb; pdb.set_trace()
 		exit('This program will finish without completing.')
 
-	def mutation(self,mutation_method,cluster_to_mutate,cell_length=None,vacuum_length=None):
+	def mutation(self, mutation_method, cluster_to_mutate, cell_length=None, vacuum_length=None):
 		"""
 		This method will perform the mutation and return the mutant. 
 
@@ -224,33 +231,39 @@ class Mutation:
 		:rtypes: Atom
 
 		"""
+		mutant = None
 		if mutation_method == "random":
-			mutant = randomMutate(cell_length, vacuum_length,cluster_makeup=cluster_to_mutate.get_elemental_makeup(),cluster_to_mutate=None,percentage_of_cluster_to_randomise=None)
+			mutant = randomMutate(cell_length, vacuum_length, cluster_makeup=cluster_to_mutate.get_elemental_makeup(),
+								  cluster_to_mutate=None, percentage_of_cluster_to_randomise=None)
 		elif mutation_method.startswith('random_'):
-			percentage_of_cluster_to_randomise = mutation_method.replace('random_','')
+			percentage_of_cluster_to_randomise = mutation_method.replace('random_', '')
 			try:
 				percentage_of_cluster_to_randomise = float(percentage_of_cluster_to_randomise)
 			except Exception:
-				print('Error in MutationProcedure Class: If you are using chosen_mutation_type in random_X where X is a percentage of atoms to be randomised, X must be in the form of an interger or a decimal number.')
+				print('Error in MutationProcedure Class: If you are using chosen_mutation_type in random_X where X '
+					  'is a percentage of atoms to be randomised, '
+					  'X must be in the form of an integer or a decimal number.')
 				print('Check this.')
 				print('chosen_mutation_type: '+str(mutation_method))
 				import pdb; pdb.set_trace()
 				exit()
 			# this should be check later to see if it is working as intended.
-			mutant = randomMutate(cell_length, vacuum_length, cluster_makeup=None,cluster_to_mutate=cluster_to_mutate,percentage_of_cluster_to_randomise=percentage_of_cluster_to_randomise)
+			mutant = randomMutate(cell_length, vacuum_length, cluster_makeup=None,
+								  cluster_to_mutate=cluster_to_mutate,
+								  percentage_of_cluster_to_randomise=percentage_of_cluster_to_randomise)
 		elif mutation_method.startswith("move"):
-			mutant = moveMutate(cluster_to_mutate,self.dist_to_move)
+			mutant = moveMutate(cluster_to_mutate, self.dist_to_move)
 		elif mutation_method == "homotop":
 			mutant = homotopMutate(cluster_to_mutate)
 		else:
 			print('Check this')
 			import pdb; pdb.set_trace()
 			exit('This program will finish without completing.')
-		if not len(mutant) == len(cluster_to_mutate):
-			print('Error in def mutation, in Mutation.py')
-			print('The offspring contains '+str(len(mutant))+' atoms, but should contain '+str(len(cluster_to_mutate)))
-			print('Check this')
-			import pdb; pdb.set_trace()
-			print('This program will finish without completing')
-			exit()
+		# if not len(mutant) == len(cluster_to_mutate):
+		# 	print('Error in def mutation, in Mutation.py')
+		# 	print('The offspring contains '+str(len(mutant))+' atoms, but should contain '+str(len(cluster_to_mutate)))
+		# 	print('Check this')
+		# 	import pdb; pdb.set_trace()
+		# 	print('This program will finish without completing')
+		# 	exit()
 		return mutant

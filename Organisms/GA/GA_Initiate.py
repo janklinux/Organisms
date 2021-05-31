@@ -43,7 +43,12 @@ def Initate_New_GAProgram(self):
 	generation = 0
 	self.epoch.setting_up_for_new_GA()
 	self.memory_operator.setup_from_database(0,self.resume_from_generation)
-	last_cluster_number = Initialise_Population(self.population,self.cluster_makeup,self.surface,self.Minimisation_Function,self.memory_operator,self.predation_operator,self.fitness_operator,self.epoch,self.cell_length,self.vacuum_to_add_length,self.r_ij,self.rounding_criteria,self.no_of_cpus,previous_cluster_name=previous_cluster_name,generation=generation)
+	last_cluster_number = Initialise_Population(self.population, self.cluster_makeup, self.surface,
+												self.Minimisation_Function, self.Initial_Energy_Function,
+												self.memory_operator, self.predation_operator, self.fitness_operator,
+												self.epoch, self.cell_length, self.vacuum_to_add_length, self.r_ij,
+												self.rounding_criteria, self.no_of_cpus,
+												previous_cluster_name=previous_cluster_name, generation=generation)
 	self.ga_recording_system.record_initial_populations(self.population) # self.ga_recording_system.record_initial_populations(self.population)
 	self.ga_recording_system.add_collection(self.population,[])
 	self.energyprofile.add_collection(self.population,generation)

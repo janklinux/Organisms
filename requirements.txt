@@ -1,0 +1,4 @@
+asap3
+ase
+numpy
+scipy

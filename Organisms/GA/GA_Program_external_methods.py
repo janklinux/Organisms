@@ -75,9 +75,14 @@ def floor_float(number,decimal_place):
 	return math.floor(float(number) * number_up)/number_up
 
 def reset_population(self,generation_number):
-	population_reset_settings = (self.cluster_makeup, self.surface, self.Minimisation_Function, self.memory_operator, self.predation_operator, self.fitness_operator, self.epoch, self.cell_length, self.vacuum_to_add_length, self.r_ij, self.rounding_criteria, self.no_of_cpus, self.previous_cluster_name)
+	population_reset_settings = (self.cluster_makeup, self.surface, self.Minimisation_Function,
+								 self.Initial_Energy_Function, self.memory_operator, self.predation_operator,
+								 self.fitness_operator, self.epoch, self.cell_length, self.vacuum_to_add_length,
+								 self.r_ij, self.rounding_criteria, self.no_of_cpus, self.previous_cluster_name)
 	epoch_due_to_population_energy_convergence = not self.population.is_there_an_energy_range(self.rounding_criteria)
-	self.previous_cluster_name = self.epoch.perform_epoch(generation_number,self.population,self.energyprofile,population_reset_settings,epoch_due_to_population_energy_convergence=epoch_due_to_population_energy_convergence)
+	self.previous_cluster_name = self.epoch.perform_epoch(generation_number, self.population, self.energyprofile,
+														  population_reset_settings,
+														  epoch_due_to_population_energy_convergence=epoch_due_to_population_energy_convergence)
 	self.ga_recording_system.add_collection(self.population, []) # save this new reset population
 
 import sys
@@ -86,27 +91,27 @@ import sys
 ## A value under 0 represents a 'halt'.
 ## A value at 1 or bigger represents 100%
 def update_progress(progress):
-    barLength = 50 # Modify this to change the length of the progress bar
-    status = ""
-    if isinstance(progress, int):
-        progress = float(progress)
-    if not isinstance(progress, float):
-        progress = 0
-        status = "error: progress var must be float\r\n"
-    if progress < 0:
-        progress = 0
-        status = "Halt...\r\n"
-    if progress >= 1:
-        progress = 1
-        status = "Done...\r\n"
-    block = int(round(barLength*progress))
-    text = "\rPercent: [{0}] {1}% {2}".format( "#"*block + "-"*(barLength-block), round(progress*100.0,1), status)
-    sys.stderr.write(text)
-    sys.stderr.flush()
+	barLength = 50 # Modify this to change the length of the progress bar
+	status = ""
+	if isinstance(progress, int):
+		progress = float(progress)
+	if not isinstance(progress, float):
+		progress = 0
+		status = "error: progress var must be float\r\n"
+	if progress < 0:
+		progress = 0
+		status = "Halt...\r\n"
+	if progress >= 1:
+		progress = 1
+		status = "Done...\r\n"
+	block = int(round(barLength*progress))
+	text = "\rPercent: [{0}] {1}% {2}".format( "#"*block + "-"*(barLength-block), round(progress*100.0,1), status)
+	sys.stderr.write(text)
+	sys.stderr.flush()
 
 def convert_seconds_to_normal_time(seconds):
-    mins, secs = divmod(seconds, 60)
-    return str(mins)+' mins and '+str(secs)+' secs'
+	mins, secs = divmod(seconds, 60)
+	return str(mins)+' mins and '+str(secs)+' secs'
 
 def check_files_for_readable_and_writable():
 	not_readable_and_writable_files = []
@@ -157,5 +162,3 @@ def check_files_for_readable_and_writable():
 			print('If this does not work, this likely means that this genetic algorithm was run last by someone else.')
 			print('Check this out and talk to the person who last ran this genetic algorithm run.')
 			exit('This program will finish without completing.')
-
-

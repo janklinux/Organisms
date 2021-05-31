@@ -345,7 +345,8 @@ class Epoch:
 	# ----------------------------------------------------------------------
 	# Perform epoch by resetting the population
 
-	def perform_epoch(self,generation_number,population,energyprofile,population_reset_settings,epoch_due_to_population_energy_convergence):
+	def perform_epoch(self, generation_number, population, energyprofile, population_reset_settings,
+					  epoch_due_to_population_energy_convergence):
 		"""
 		Perform an epoch by resetting all the clusters in the population.
 
@@ -363,7 +364,9 @@ class Epoch:
 		returns The name of the more recently generated cluster before the epoch method was performed.
 		rtype   bool.
 		"""
-		cluster_makeup, surface, Minimisation_Function, memory_operator, predation_operator, fitness_operator, epoch_method, cell_length, vacuum_to_add_length, r_ij, rounding_criteria, no_of_cpus, previous_cluster_name = population_reset_settings	
+		(cluster_makeup, surface, Minimisation_Function, Initial_Energy_Function, memory_operator, predation_operator,
+		 fitness_operator, epoch_method, cell_length, vacuum_to_add_length, r_ij, rounding_criteria, no_of_cpus,
+		 previous_cluster_name) = population_reset_settings
 		# ---------------------------------------------------------------------------------------- #
 		# reset the predation and fitness operators
 		fitness_operator.reset()
@@ -379,7 +382,14 @@ class Epoch:
 		# reset the population
 		for index in range(len(population)-1,-1,-1):
 			population.remove(index)
-		previous_cluster_name = Initialise_Population(population,cluster_makeup,surface,Minimisation_Function,memory_operator,predation_operator,fitness_operator,epoch_method,cell_length,vacuum_to_add_length,r_ij,rounding_criteria,no_of_cpus,previous_cluster_name=previous_cluster_name,generation=generation_number,get_already_created_clusters=False,is_epoch=True,epoch_due_to_population_energy_convergence=epoch_due_to_population_energy_convergence)
+		previous_cluster_name = Initialise_Population(population, cluster_makeup, surface, Minimisation_Function,
+													  Initial_Energy_Function, memory_operator, predation_operator,
+													  fitness_operator, epoch_method, cell_length, vacuum_to_add_length,
+													  r_ij, rounding_criteria, no_of_cpus,
+													  previous_cluster_name=previous_cluster_name,
+													  generation=generation_number,
+													  get_already_created_clusters=False, is_epoch=True,
+													  epoch_due_to_population_energy_convergence=epoch_due_to_population_energy_convergence)
 		# ---------------------------------------------------------------------------------------- #
 		# reset the epoch_data file
 		self.clusters_in_previous_population = population.get_cluster_names()

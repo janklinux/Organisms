@@ -17,18 +17,18 @@ class Population(Collection):
 	:type  write_data: bool.
 
 	"""
-	def __init__(self,name,size,user_initialised_population_folder=None,write_data=True):
+	def __init__(self, name, size, user_initialised_population_folder=None, write_data=True):
 		self.write_data = write_data
 		have_database = write_collection_history = self.write_data
-		super().__init__(name,size,have_database=have_database,path=None,write_collection_history=write_collection_history)
+		super().__init__(name, size, have_database=have_database, path=None,
+						 write_collection_history=write_collection_history)
 		self.user_initialised_population_folder = user_initialised_population_folder
-		#############################
 		# set up current_gen_details
 		if self.write_data:
 			self.current_population_details = 'current_population_details.txt'
-			self.current_population_details_path = self.path+'/'+self.current_population_details
+			self.current_population_details_path = self.path + '/' + self.current_population_details
 
-	def get_pool_folder_size(self,folder_to_look_at=False):
+	def get_pool_folder_size(self, folder_to_look_at=False):
 		"""
 		This definition will count the number of clusters in the population that the user places into the
 		GA before it runs. It does this by counting the number of numbered folders (these in this program
@@ -58,7 +58,8 @@ class Population(Collection):
 		noCluInPool = 1
 		for cluster_name in clusters_in_population:
 			if not noCluInPool == cluster_name:
-				exit("Error: The clusters in the population are not sequently numbered. Please renumber your original clusters so they are in sequential order.")
+				exit("Error: The clusters in the population are not sequently numbered. "
+					 "Please renumber your original clusters so they are in sequential order.")
 			noCluInPool += 1
 		# if there were no faults (i.e. the folders are sequently numbered), return the number.
 		return len(clusters_in_population)
@@ -85,7 +86,7 @@ class Population(Collection):
 	####################### current_state_file METHODS #######################
 	##########################################################################
 
-	def current_state_file(self,generation_number):
+	def current_state_file(self, generation_number):
 		"""
 		Write the current state file for the population for this generation.
 

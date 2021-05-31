@@ -1,9 +1,13 @@
 import copy
-from random import randrange, uniform, randint #, random
-from collections import Counter
-
+import random
+import sys
+import time
+import numpy as np
+from random import randrange, uniform, randint, sample
+from pymatgen.io.ase import AseAtomsAdaptor
 from Organisms.GA.Cluster import Cluster
 from Organisms.GA.ExternalDefinitions import is_position_already_occupied_by_an_atom_in_Cluster # , InclusionRadiusOfCluster
+
 
 def moveMutate(cluster_to_mutate, dist_to_move):
 	'''
@@ -23,18 +27,14 @@ def moveMutate(cluster_to_mutate, dist_to_move):
 	# Randomly move each atom of the cluster
 	for atom in mutant:
 		distance_left_to_move = dist_to_move
-		####################
 		movement_x = uniform(-1.,1.)*distance_left_to_move
 		atom.x += movement_x
 		distance_left_to_move = (distance_left_to_move**2.0 - movement_x**2.0)**0.5
-		####################
 		movement_y = uniform(-1.,1.)*distance_left_to_move
 		atom.y += movement_y
 		distance_left_to_move = (distance_left_to_move**2.0 - movement_y**2.0)**0.5
-		####################
 		movement_z = distance_left_to_move
 		atom.z += uniform(-1.,1.)*movement_z
-		####################
 	if not len(mutant) == len(cluster_to_mutate):
 		print('Error in def moveMutate, in Types_Of_Mutations.py')
 		print('The offspring contains '+str(len(mutant))+' atoms, but should contain '+str(len(cluster_to_mutate)))
@@ -61,20 +61,23 @@ def homotopMutate(cluster_to_mutate):
 	while True:
 		atom2Index = randrange(0,len(cluster_to_mutate))
 		# If the two atoms picked are the same or are the same type of atom, try again (can make this more efficient)
-		if not (cluster_to_mutate[atom1Index].symbol == cluster_to_mutate[atom2Index].symbol or atom1Index == atom2Index):
+		if not (cluster_to_mutate[atom1Index].symbol == cluster_to_mutate[atom2Index].symbol or
+				atom1Index == atom2Index):
 			break
 	# Swap element types of pair in terms of positions. Note (GRW) I did originally just swap
 	# the symbol variable in mutant but thought there are alot of other variables I am not thinking about
 	# transferring as well which may cause issues. Swapping the positions seemed less likely to bring up
 	# problems in the future.
-	print('Atom '+str(atom1Index)+' ('+str(cluster_to_mutate[atom1Index].symbol)+') will be swapped with atom '+str(atom2Index)+' ('+str(cluster_to_mutate[atom2Index].symbol)+').')
+	print('Atom ' + str(atom1Index) + ' (' + str(cluster_to_mutate[atom1Index].symbol) +
+		  ') will be swapped with atom ' + str(atom2Index) + ' (' + str(cluster_to_mutate[atom2Index].symbol) + ').')
 	mutant = copy.deepcopy(cluster_to_mutate)
 	temp = copy.deepcopy(mutant[atom1Index].position)
 	mutant[atom1Index].position = copy.deepcopy(mutant[atom2Index].position)
 	mutant[atom2Index].position = copy.deepcopy(temp)
 	return mutant
 
-def randomMutate(boxtoplaceinlength,vacuumAdd,cluster_makeup=None,cluster_to_mutate=None,percentage_of_cluster_to_randomise=None):
+def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_mutate=None,
+				 percentage_of_cluster_to_randomise=None):
 	"""
 	This definition provides the random method for the mutation proceedure. In this method, a cluster is
 	designed by randomly placing the designed atoms of elements into a predefined unit cell.
@@ -95,23 +98,88 @@ def randomMutate(boxtoplaceinlength,vacuumAdd,cluster_makeup=None,cluster_to_mut
 
 	"""
 	# Prepare the method for performing a fully ramdomly generated cluster
-	if not cluster_makeup is None and (cluster_to_mutate is None or percentage_of_cluster_to_randomise is None):
-		#Turn cluster_makeup into a chemical formula string
+	mutant = None
+	atoms_to_randomise = []
+
+	np.random.seed(int(time.time()))
+	if cluster_makeup is not None and (cluster_to_mutate is None or percentage_of_cluster_to_randomise is None):
+		# Turn cluster_makeup into a chemical formula string
+		print('Mutant transformed', file=sys.stderr)
 		cluster_chemical_formula = '' 
 		for element, no_of_element in cluster_makeup.items():
-			cluster_chemical_formula += str(element+str(no_of_element))
+			max_atom_change = int(np.floor(np.minimum(no_of_element, 5)))
+			if max_atom_change == no_of_element:
+				max_atom_change -= 1
+			if max_atom_change == 0:
+				actual_change = 0
+			else:
+				actual_change = np.random.randint(low=-max_atom_change, high=max_atom_change, size=1, dtype=int)[0]
+			# print(element, actual_change, file=sys.stderr)
+			cluster_chemical_formula += str(element) + str(int(no_of_element + actual_change))
+
+		# print('genning new mutant: ', cluster_chemical_formula)
 		# set up the cluster for randomizing
-		mutant = Cluster(cluster_chemical_formula); nAtoms = len(mutant); atoms_to_randomise = range(nAtoms) # randomise all atoms in the cluster.
+		mutant = Cluster(cluster_chemical_formula)
+		nAtoms = len(mutant)
+		atoms_to_randomise = range(nAtoms)  # randomise all atoms in the cluster.
 	# preparing this method for only randomly changing the position of only a percentage (of atoms) of a cluster.
 	elif cluster_makeup is None and not (cluster_to_mutate is None or percentage_of_cluster_to_randomise is None):
-		mutant = copy.deepcopy(cluster_to_mutate); nAtoms = len(mutant)
-		# The following will pick random atoms in the cluster to randomise
-		no_of_atoms_to_randomise = int(ceil(float(nAtoms)*(float(percentage_of_cluster_to_randomise)/100.0)))
-		all_atoms_in_cluster = range(nAtoms); atoms_to_randomise = []
-		for NOTUSED in range(no_of_atoms_to_randomise):
-			index_to_randomise = randint(0,len(all_atoms_in_cluster))-1
-			atoms_to_randomise.append(all_atoms_in_cluster.pop(index_to_randomise))
-	else: # Error.
+		mutant = copy.deepcopy(cluster_to_mutate)
+		nAtoms = len(mutant)
+		structure = AseAtomsAdaptor().get_structure(mutant)
+		if len(structure.composition.elements) == 1:  # no swapping of unary material
+			swapping_prob = 0
+		else:
+			swapping_prob = 0.75
+
+		if np.random.random() < swapping_prob:  # my additional idea
+			print('Mutant swapped', file=sys.stderr)
+			symbols = dict()
+			for idx, species in enumerate(structure.species):
+				if species.name not in symbols:
+					symbols[species.name] = []
+					symbols[species.name].append(idx)
+				else:
+					symbols[species.name].append(idx)
+
+			if 'Co' in structure.species or 'Ni' in structure.species:
+				min_species = 1
+			else:
+				min_species = np.amin([[str(s) for s in structure.species].count(str(species))
+									   for species in structure.composition.elements])
+
+			# print('swapped: {}'.format(min_species), file=sys.stderr)
+
+			exchange = dict()
+			for species in symbols:
+				exchange[species] = sample(symbols[species], randint(1, min_species))
+			pairs = list(exchange.items())
+			swapped = dict({pairs[1][0]: exchange[pairs[0][0]], pairs[0][0]: exchange[pairs[1][0]]})
+			# print(swapped, file=sys.stderr)
+			for species in swapped:
+				for idx in swapped[species]:
+					structure.replace(idx, species=species)
+			structure.sort()
+			mutant = Cluster(AseAtomsAdaptor.get_atoms(structure))
+			nAtoms = len(mutant)
+			atoms_to_randomise = range(nAtoms)
+
+		else:
+			# The following will pick random atoms in the cluster to randomise, original code
+			print('Mutant randomized', file=sys.stderr)
+			no_of_atoms_to_randomise = int(np.ceil(float(nAtoms) * (float(percentage_of_cluster_to_randomise) / 100.0)))
+			all_atoms_in_cluster = [int(ia) for ia in range(nAtoms)]
+			atoms_to_randomise = []
+			for NOTUSED in range(no_of_atoms_to_randomise):
+				index_to_randomise = randint(0, len(all_atoms_in_cluster)) - 1
+				atoms_to_randomise.append(all_atoms_in_cluster.pop(index_to_randomise))
+
+			cluster_chemical_formula = ''
+			for element, no_of_element in cluster_to_mutate.get_elemental_makeup().items():
+				cluster_chemical_formula += str(element) + str(int(no_of_element))
+			# print('randomize mutant: ', cluster_chemical_formula)
+
+	else:  # Error
 		print('Error in MutationProcedure: def randomMutate.')
 		print('cluster_makeup = ' + str(cluster_makeup))
 		print('cluster_to_mutate = ' + str(cluster_to_mutate))
@@ -124,7 +192,7 @@ def randomMutate(boxtoplaceinlength,vacuumAdd,cluster_makeup=None,cluster_to_mut
 	# setup the Atoms class to define the atoms in the cluster of mutant and define a unit cell
 	# for atoms to be randomly placed in.
 	# Get initial size of cell\
-	mutant.set_cell([boxtoplaceinlength,boxtoplaceinlength,boxtoplaceinlength])
+	mutant.set_cell([boxtoplaceinlength, boxtoplaceinlength, boxtoplaceinlength])
 	mutant.center()
 	# For each element, place a set number of atoms of that element into the cluster in a random position
 	# within the defined cube with sides = r_ij*scale
@@ -136,7 +204,8 @@ def randomMutate(boxtoplaceinlength,vacuumAdd,cluster_makeup=None,cluster_to_mut
 			position = [x_position, y_position, z_position]
 			# check the cluster to see that this new random position will not cause this atom 
 			# to be in the same place as any atom in the cluster currently
-			if not is_position_already_occupied_by_an_atom_in_Cluster(position,mutant,atom_indices_to_exclude_from_comparison=[index]):
+			if not is_position_already_occupied_by_an_atom_in_Cluster(position, mutant,
+																	  atom_indices_to_exclude_from_comparison=[index]):
 				# Found that one of the atoms in this cluster has the same position as this randomly generated one.
 				# Will need to make a new randomly generated position list
 				break
@@ -156,16 +225,17 @@ def randomMutate(boxtoplaceinlength,vacuumAdd,cluster_makeup=None,cluster_to_mut
 			import pdb; pdb.set_trace()
 			print('This program will finish without completing')
 			exit()
-	elif cluster_to_mutate is None:
-		number_of_atoms = sum(Counter(cluster_makeup).values())
+	# elif cluster_to_mutate is None:
+	# 	number_of_atoms = sum(Counter(cluster_makeup).values())
+	# 	pass
 		#print('Atoms in mutant: '+str(len(mutant))+'; number_of_atoms = '+str(number_of_atoms))
 		#import pdb; pdb.set_trace()
-		if not len(mutant) == number_of_atoms:
-			print('Error in def randomMutate, in Types_Of_Mutations.py')
-			print('The offspring contains '+str(len(mutant))+' atoms, but should contain '+str(len(cluster_to_mutate)))
-			print('Check this')
-			import pdb; pdb.set_trace()
-			print('This program will finish without completing')
-			exit()
+		# if not len(mutant) == number_of_atoms:
+		# 	print('Error in def randomMutate, in Types_Of_Mutations.py')
+		# 	print('The offspring contains '+str(len(mutant))+' atoms, but should contain '+str(len(cluster_to_mutate)))
+		# 	print('Check this')
+		# 	import pdb; pdb.set_trace()
+		# 	print('This program will finish without completing')
+		# 	exit()
 	return mutant
 		

@@ -44,7 +44,7 @@ def write_meta_YAML(version):
     metaYAML.write('    - numpy\n')
     metaYAML.write('    - scipy\n')
     metaYAML.write('    - ase\n')
-    metaYAML.write('    - asap3 3.11.10\n')
+    metaYAML.write('    - asap3\n')
     metaYAML.write('\n')
     metaYAML.write('about:\n')
     metaYAML.write('  home: https://github.com/GardenGroupUO/Organisms\n')

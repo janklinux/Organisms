@@ -69,12 +69,14 @@ class GA_Program():
 	:param total_length_of_running_time: The total amount of time to run the genetic algorithm for. If the algorithm is still running after this time, the algorithm will safety finish. Time given in hours. None means no limit on time, Default: None.
 	:type  total_length_of_running_time: int or None
 	"""
-	def __init__(self,cluster_makeup,pop_size,generations,no_offspring_per_generation,creating_offspring_mode,crossover_type,mutation_types,
-		chance_of_mutation,r_ij,vacuum_to_add_length,Minimisation_Function,surface_details=None,epoch_settings={'use epoch': 'off'},
-		cell_length='default',memory_operator_information={'perform_memory_operator':'Off'},predation_information={'Predation_Switch':"Off"},
-		fitness_information={'Fitness_Switch':"Energy"},ga_recording_information={},force_replace_pop_clusters_with_offspring=True,
-		user_initialised_population_folder=None,rounding_criteria=2,print_details=False,no_of_cpus=1,finish_algorithm_if_found_cluster_energy=None,
-		total_length_of_running_time=None):
+	def __init__(self, cluster_makeup, pop_size, generations, no_offspring_per_generation, creating_offspring_mode,
+				 crossover_type, mutation_types, chance_of_mutation, r_ij, vacuum_to_add_length, Minimisation_Function,
+				 Initial_Energy_Function, surface_details=None, epoch_settings={'use epoch': 'off'},
+ 		         cell_length='default', memory_operator_information={'perform_memory_operator':'Off'},
+				 predation_information={'Predation_Switch':"Off"}, fitness_information={'Fitness_Switch':"Energy"},
+				 ga_recording_information={}, force_replace_pop_clusters_with_offspring=True,
+		         user_initialised_population_folder=None, rounding_criteria=2, print_details=False, no_of_cpus=1,
+				 finish_algorithm_if_found_cluster_energy=None, total_length_of_running_time=None):
 
 		# Check lock, and if ok to run set a program lock, then
 		Lock_Check_and_Set()
@@ -83,7 +85,12 @@ class GA_Program():
 		# Check to make sure that all files in the folder are readable and writeable
 		check_files_for_readable_and_writable()
 		# Set up the genetic algorithm
-		GA_Setup(self,cluster_makeup,pop_size,generations,no_offspring_per_generation,creating_offspring_mode,crossover_type,mutation_types,chance_of_mutation,r_ij,vacuum_to_add_length,Minimisation_Function,surface_details,epoch_settings,cell_length,memory_operator_information,predation_information,fitness_information,ga_recording_information,force_replace_pop_clusters_with_offspring,user_initialised_population_folder,rounding_criteria,print_details,no_of_cpus,finish_algorithm_if_found_cluster_energy,total_length_of_running_time)# introduction remarks
+		GA_Setup(self, cluster_makeup, pop_size, generations, no_offspring_per_generation, creating_offspring_mode,
+				 crossover_type, mutation_types, chance_of_mutation, r_ij, vacuum_to_add_length,
+				 Minimisation_Function, Initial_Energy_Function, surface_details, epoch_settings, cell_length,
+				 memory_operator_information, predation_information, fitness_information, ga_recording_information,
+				 force_replace_pop_clusters_with_offspring, user_initialised_population_folder, rounding_criteria,
+				 print_details, no_of_cpus, finish_algorithm_if_found_cluster_energy, total_length_of_running_time)
 		# print introductory notes about your genetic algorithm run
 		Introducing_Remarks(self)
 		# Check the GA before beginning and initiate the GA program
@@ -132,7 +139,7 @@ class GA_Program():
 			all_energies_of_offpsring = self.offspring_pool.get_cluster_energies()
 			check_names_2(self.population,self.offspring_pool)
 			# The energy from the offspring clusters are recorded into the energyprofile. 
-			self.energyprofile.add_collection(self.offspring_pool,generation_number)
+			self.energyprofile.add_collection(self.offspring_pool, generation_number)
 			##############################################################################
 			############################# MEMORY OPERATION ###############################
 			# remove clusters that are too similar to clusters in the memory
@@ -209,17 +216,17 @@ class GA_Program():
 			is_energy_in_fitness_function = self.fitness_operator.fitness_switch == 'Energy' or (self.fitness_operator.fitness_switch == 'SCM + Energy' and not self.fitness_operator.SCM_fitness_contribution == 1.0)
 			is_SCM_in_fitness_function = self.fitness_operator.fitness_switch == 'SCM + Energy' and not self.fitness_operator.SCM_fitness_contribution == 0.0
 			if is_energy_in_fitness_function and not self.population.is_there_an_energy_range(self.rounding_criteria):
-				self.perform_epoch_on_population(generation_number)
+				reset_population(self,generation_number)
 			elif is_SCM_in_fitness_function and not self.fitness_operator.is_there_an_similarity_range(self.similarity_rounding_criteria):
-				self.perform_epoch_on_population(generation_number)
+				reset_population(self,generation_number)
 			elif self.epoch.should_epoch(self.population,generation_number):
 				if self.epoch.first_epoch_to_change_fitness_function:
 					perform_reset_population, self.fitness_operator = self.epoch.change_fitness_function(self.fitness_operator)
 					if perform_reset_population:
-						self.perform_epoch_on_population(generation_number)
+						reset_population(self,generation_number)
 				else:
-					self.perform_epoch_on_population(generation_number)
-				#self.perform_epoch_on_population(self.generation_number):
+					reset_population(self,generation_number)
+				#reset_population(self,generation_number)
 			else:
 				self.fitness_operator.remove_from_database(clusters_removed_from_the_population+cleaned_offspring_names)
 				self.fitness_operator.assign_all_fitnesses_after_natural_selection(generation_number)
@@ -351,11 +358,21 @@ class GA_Program():
 		"""
 		This provides a generator that contains the inputs needed to create the offspring via parallelisation.
 		"""
-		def tasks(previous_cluster_name,generation_number,population,offspring_pool_name,chance_of_mutation,r_ij,cell_length,vacuum_to_add_length,creating_offspring_mode,crossover_procedure,mutation_procedure,no_offspring_per_generation,rounding_criteria,Minimisation_Function,surface,place_cluster_where,print_details):
-			run_numbers = range(previous_cluster_name+1,previous_cluster_name+self.no_offspring_per_generation+1)
+		def tasks(previous_cluster_name, generation_number, population, offspring_pool_name, chance_of_mutation,
+				  r_ij, cell_length, vacuum_to_add_length, creating_offspring_mode, crossover_procedure,
+				  mutation_procedure, no_offspring_per_generation, rounding_criteria,
+				  Minimisation_Function, Initial_Energy_Function, surface, place_cluster_where, print_details):
+			run_numbers = range(previous_cluster_name+1, previous_cluster_name+self.no_offspring_per_generation+1)
 			for run_number in run_numbers:
-				yield (run_number,generation_number,population,offspring_pool_name,chance_of_mutation,r_ij,cell_length,vacuum_to_add_length,creating_offspring_mode,crossover_procedure,mutation_procedure,no_offspring_per_generation,rounding_criteria,Minimisation_Function,surface,place_cluster_where,print_details)
-		return tasks(previous_cluster_name,generation_number,self.population,self.offspring_pool_name,self.chance_of_mutation,self.r_ij,self.cell_length,self.vacuum_to_add_length,self.creating_offspring_mode,self.crossover_procedure,self.mutation_procedure,self.no_offspring_per_generation,self.rounding_criteria,self.Minimisation_Function,self.surface,self.place_cluster_where,self.print_details)
+				yield (run_number, generation_number, population, offspring_pool_name, chance_of_mutation, r_ij,
+					   cell_length, vacuum_to_add_length, creating_offspring_mode, crossover_procedure,
+					   mutation_procedure, no_offspring_per_generation, rounding_criteria, Minimisation_Function,
+					   Initial_Energy_Function, surface,place_cluster_where,print_details)
+		return tasks(previous_cluster_name, generation_number, self.population, self.offspring_pool_name,
+					 self.chance_of_mutation, self.r_ij, self.cell_length, self.vacuum_to_add_length,
+					 self.creating_offspring_mode, self.crossover_procedure, self.mutation_procedure,
+					 self.no_offspring_per_generation, self.rounding_criteria, self.Minimisation_Function,
+					 self.Initial_Energy_Function, self.surface, self.place_cluster_where, self.print_details)
 
 	#########################################################################################################################
 	#########################################################################################################################
@@ -382,7 +399,7 @@ class GA_Program():
 		:param offspring_pool: This is the offspring pool the GA will be using.
 		:type  offspring_pool: Offspring
 
-		This Natural Selection proceedure will update self.population
+		This Natural Selection procedure will update self.population
 
 		"""
 		if self.print_details:
@@ -418,26 +435,3 @@ class GA_Program():
 		if self.print_details:
 			print("****---------------------****")
 		return clusters_removed_from_the_population
-
-	#########################################################################################################################
-	#########################################################################################################################
-
-	#----------------------------------------------------------------------------#
-	#                                   Epoch                                    #
-	#                     This is how the population will epoch                  #
-	#----------------------------------------------------------------------------#
-
-	def perform_epoch_on_population(self,generation_number):
-		"""
-		This definition will perform an epoch upon the population
-
-		:param generation_number: This is the current generation of the genetic algorithm run. This mauy not be 0 if you are restarting the algorithm
-		:type  generation_number: int
-
-		"""
-		self.ga_program_details.epoch_start_clock()
-		reset_population(self,generation_number)
-		self.ga_program_details.epoch_end_clock()
-
-	#########################################################################################################################
-	#########################################################################################################################

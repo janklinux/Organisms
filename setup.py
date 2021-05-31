@@ -67,7 +67,7 @@ setup(name='Organisms',
       zip_safe=False,
       keywords = ['nanoclusters', 'nanoparticles', 'clusters', 'optimisation', 'genetic-algorithm', 'ase', 'university-of-otago', 'asap3', 'atomic-simulation-environment', 'jupyter-binder', 'predation-operator', 'fitness-operator', 'otago-university', 'common-neighbor-analysis', 'common-neighbour-analysis'],
       install_requires=[
-          'numpy','scipy','ase>=3.19.0','asap3==3.11.10',
+          'numpy','scipy','ase>=3.19.0','asap3',
           'Sphinx','sphinx-rtd-theme','sphinx-tabs','sphinxcontrib-applehelp','sphinxcontrib-devhelp',
           'sphinxcontrib-htmlhelp','sphinxcontrib-jsmath','sphinxcontrib-plantuml','sphinxcontrib-qthelp',
           'sphinxcontrib-serializinghtml','sphinxcontrib-wiki','packaging','termcolor'

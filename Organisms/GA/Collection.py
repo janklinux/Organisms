@@ -9,6 +9,7 @@ from multiprocessing import Process
 from Organisms.GA.Cluster import Cluster
 from Organisms.GA.EnergyProfile import tail, remove_end_lines_from_text
 
+
 class Collection:
 	"""
 	This is the foundation of the object used to store clusters in the population, the offspring, and for recording clusters made during the genetic algorithm using the GA_Recording_System.py
@@ -39,38 +40,48 @@ class Collection:
 			self.clusters = []
 		else:
 			self.no_of_clusters_counter = 0
-		#############################
 		# Options about how to write clusters to disk.
-		#############################
-		# preparing folders to write information to for Collection 
+		# preparing folders to write information to for Collection
 		if path is None:
-			self.path = os.getcwd()+'/'+self.name
+			self.path = os.getcwd() + '/' + self.name
 		else:
 			self.path = path
 		self.have_database = have_database
 		self.write_collection_history = write_collection_history
 		if self.have_database or self.write_collection_history:
 			self.make_collection_folder()
-		#############################
 		# set up database or folders for recording clusters to disk.
 		# and if the database exists, make sure that it has been turned to read and write
 		if self.have_database:
-			self.database_path = self.path+'/'+str(self.name)+'.db'
-		#############################
+			self.database_path = self.path + '/' + str(self.name) + '.db'
 		# set up history writing folders for Collection
 		if self.write_collection_history:
 			self.create_collection_history()
-		####################################################################################################################
 
 	def __repr__(self):
-		return '<Collection: '+str(self.name)+'> current size: '+str(len(self))+'; Clusters: '+str(self.clusters)
+		return '<Collection: ' + str(self.name) + '> current size: ' + str(len(self)) + '; Clusters: '\
+			   + str(self.clusters)
 
 	def information(self):
 		tostring =  '--------------------------------------------------------------------------\n'
-		tostring += '<Collection: '+str(self.name)+'> current size: '+str(len(self))+'\n'
+		tostring += '<Collection: ' + str(self.name) + '> current size: ' + str(len(self)) + '\n'
+		elements = []
+		names = []
+		energies = []
+		fitnesses = []
 		for cluster in self.clusters:
-			tostring += 'Cluster: '+str(cluster.name)+'; Energy: '+str(cluster.energy)+'; Fitness: '+str(cluster.fitness)+'\n'
+			els = ''
+			for k, v in cluster.get_elemental_makeup().items():
+				els += str(k) + str(v)
+			elements.append(els)
+			names.append(cluster.name)
+			energies.append(cluster.energy)
+			fitnesses.append(cluster.fitness)
+		for rnk, (en, els, na, fit) in enumerate(sorted(zip(energies, elements, names, fitnesses))):
+			tostring += 'Rank {:3d}: Cluster {:5d} with composition {:8s}; Energy: {:6.6f}; Fitness: {:4.4f}\n'.\
+				format(rnk, na, els, en, fit)
 		tostring += '--------------------------------------------------------------------------\n'
+
 		return tostring
 
 	def add_metadata(self):
@@ -818,7 +829,7 @@ class Collection:
 				else:
 					counter += 1
 			if lines_to_remove > 0:
-				print('Removing the last '+str(lines_to_remove)+' line(s) from '+str(self.history_path))
+				print('Removing the last '+str(lines_to_remove)+' from '+str(self.history_path))
 				remove_end_lines_from_text(self.history_path, lines_to_remove)
 			else:
 				break

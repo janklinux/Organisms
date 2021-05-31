@@ -16,10 +16,13 @@ from Organisms.GA.GA_Recording_System import GA_Recording_System
 from Organisms.GA.EnergyProfile import EnergyProfile
 from Organisms.GA.Timer import Timer
 
-def GA_Setup(self,cluster_makeup,pop_size,generations,no_offspring_per_generation,creating_offspring_mode,crossover_type,mutation_types,
-	chance_of_mutation,r_ij,vacuum_to_add_length,Minimisation_Function,surface_details,epoch_settings,cell_length,memory_operator_information,
-	predation_information,fitness_information,ga_recording_information,force_replace_pop_clusters_with_offspring,user_initialised_population_folder,
-	rounding_criteria,print_details,no_of_cpus,finish_algorithm_if_found_cluster_energy,total_length_of_running_time):
+def GA_Setup(self, cluster_makeup, pop_size, generations, no_offspring_per_generation, creating_offspring_mode,
+			 crossover_type, mutation_types, chance_of_mutation, r_ij, vacuum_to_add_length, Minimisation_Function,
+			 Initial_Energy_Function, surface_details, epoch_settings, cell_length, memory_operator_information,
+             predation_information, fitness_information, ga_recording_information,
+			 force_replace_pop_clusters_with_offspring, user_initialised_population_folder,
+             rounding_criteria, print_details, no_of_cpus, finish_algorithm_if_found_cluster_energy,
+			 total_length_of_running_time):
 	"""
 	This method will set up the genetic algorithm.
 
@@ -91,7 +94,8 @@ def GA_Setup(self,cluster_makeup,pop_size,generations,no_offspring_per_generatio
 	self.pop_size = pop_size
 	self.user_initialised_population_folder = user_initialised_population_folder
 	# ------------------------------------------------------------------------------------------- #
-	self.population = Population(self.population_name,self.pop_size,user_initialised_population_folder=self.user_initialised_population_folder)
+	self.population = Population(self.population_name, self.pop_size,
+								 user_initialised_population_folder=self.user_initialised_population_folder)
 	self.energyprofile = EnergyProfile(self.population)
 	if self.energyprofile.is_LES_note_in_EnergyProfile():
 		print("Found the note, 'Finished prematurely as LES energy found.', in the populations energyprofile.")
@@ -124,7 +128,8 @@ def GA_Setup(self,cluster_makeup,pop_size,generations,no_offspring_per_generatio
 	self.crossover_type = crossover_type
 	self.mutation_types = mutation_types
 	self.chance_of_mutation = chance_of_mutation
-	self.crossover_procedure = Crossover(self.crossover_type,self.r_ij,self.vacuum_to_add_length,sum(self.cluster_makeup.values()))
+	self.crossover_procedure = Crossover(self.crossover_type, self.r_ij, self.vacuum_to_add_length,
+										 sum(self.cluster_makeup.values()))
 	self.mutation_procedure  = Mutation(self.mutation_types,self.r_ij,self.vacuum_to_add_length)
 	# ------------------------------------------------------------------------------------------- #
 	# This object will remember any clusters to avoid in the population
@@ -134,7 +139,11 @@ def GA_Setup(self,cluster_makeup,pop_size,generations,no_offspring_per_generatio
 	# This contains all the informatino about the predation operator and fitness operator that will be used.
 	self.predation_information = predation_information 
 	self.fitness_information = fitness_information
-	self.predation_operator, self.fitness_operator = get_predation_and_fitness_operators(self.predation_information, self.fitness_information, self.population, self.generations, self.no_of_cpus, False)
+	self.predation_operator, self.fitness_operator = get_predation_and_fitness_operators(self.predation_information,
+																						 self.fitness_information,
+																						 self.population,
+																						 self.generations,
+																						 self.no_of_cpus, False)
 	self.force_replace_pop_clusters_with_offspring = force_replace_pop_clusters_with_offspring
 	# ------------------------------------------------------------------------------------------- #
 	# Create and set the conditions for performing an epoch
@@ -149,6 +158,10 @@ def GA_Setup(self,cluster_makeup,pop_size,generations,no_offspring_per_generatio
 	if not inspect.isfunction(Minimisation_Function):
 		exit('Error: Minimisation_Function must be a function/def (definition)')
 	self.Minimisation_Function = Minimisation_Function
+	if not inspect.isfunction(Initial_Energy_Function):
+		exit('Error: Minimisation_Function must be a function/def (definition)')
+	self.Initial_Energy_Function = Initial_Energy_Function
+
 	# These are last techinical points that the algorithm is designed in mind
 	if rounding_criteria > 12:
 		print('Error, the maximum decimal place rounding, to avoid numerical errors, is 12.')

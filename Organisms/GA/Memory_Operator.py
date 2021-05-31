@@ -92,7 +92,7 @@ class Memory_Operator:
 		"""
 		similarity = self.get_CNA_similarity_method(cluster_CNA_profile,memory_CNA_profile)
 		#print('similarity: '+str(similarity))
-		return (similarity >= self.cut_off_similarity)
+		return similarity >= self.cut_off_similarity
 
 	def check_collection(self,collection):
 		"""

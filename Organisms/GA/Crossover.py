@@ -8,6 +8,8 @@ This program is designed to run the mating proceedure of the Genetic Algorithm.
 
 from ase import Atom, Atoms
 import random as rand
+from Organisms.GA.ExternalDefinitions import AtomInClusterPosition
+
 
 #population_type_example = Population('example',-1,False,None,False)
 #cluster_type_example = Cluster()
@@ -180,7 +182,7 @@ class Crossover:
 			parent.center(vacuum=None, axis=(0, 1, 2), about=0.)
 		return parents
 
-	def centre_offspring_at_centre_of_cell(self,offspring):
+	def centre_offspring_at_centre_of_cell(self, offspring):
 		"""
 		This method will center the offspring as required. 
 

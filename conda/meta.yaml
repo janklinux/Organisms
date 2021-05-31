@@ -23,7 +23,7 @@ requirements:
     - numpy
     - scipy
     - ase
-    - asap3 3.11.10
+    - asap3
 
 about:
   home: https://github.com/GardenGroupUO/Organisms
