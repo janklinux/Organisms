@@ -143,11 +143,9 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_
 
 			if 'Co' in symbols or 'Ni' in symbols:
 				min_species = 1
-				print('MINSPEC: {}'.format(min_species), file=sys.stderr)
 			else:
 				min_species = np.amin([[str(s) for s in structure.species].count(str(species))
 									   for species in structure.composition.elements])
-				print('FUCKUP: {}'.format(min_species), file=sys.stderr)
 
 			exchange = dict()
 			for species in symbols:

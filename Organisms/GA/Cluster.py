@@ -199,7 +199,7 @@ class Cluster(Atoms):
         self.excluded_because_violates_predation_operator = excluded_because_violates_predation_operator
         self.initial_population = initial_population
 
-        raise RuntimeError('This is a STUB in custom_verify_cluster')
+        # raise RuntimeError('This is a STUB in custom_verify_cluster')
 
     def sortZ(self):
         """
