@@ -22,7 +22,7 @@ def GA_Setup(self, cluster_makeup, pop_size, generations, no_offspring_per_gener
              predation_information, fitness_information, ga_recording_information,
 			 force_replace_pop_clusters_with_offspring, user_initialised_population_folder,
              rounding_criteria, print_details, no_of_cpus, finish_algorithm_if_found_cluster_energy,
-			 total_length_of_running_time):
+			 total_length_of_running_time, composition_constrained):
 	"""
 	This method will set up the genetic algorithm.
 
@@ -80,9 +80,9 @@ def GA_Setup(self, cluster_makeup, pop_size, generations, no_offspring_per_gener
 	self.Run_path = os.getcwd()
 	# set_number_of_cpus
 	self.no_of_cpus = no_of_cpus
-	##########################################################################################################
-	################################# Variables for the Genetic Algorithm ####################################
-	##########################################################################################################
+	self.composition_constrained = composition_constrained
+
+	# Variables for the Genetic Algorithm
 	# This details the elemental and number of atom composition of cluster that the user would like to investigate
 	self.cluster_makeup = cluster_makeup
 	# Surface Details

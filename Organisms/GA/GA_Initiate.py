@@ -47,7 +47,7 @@ def Initate_New_GAProgram(self):
 												self.Minimisation_Function, self.Initial_Energy_Function,
 												self.memory_operator, self.predation_operator, self.fitness_operator,
 												self.epoch, self.cell_length, self.vacuum_to_add_length, self.r_ij,
-												self.rounding_criteria, self.no_of_cpus,
+												self.rounding_criteria, self.no_of_cpus, self.composition_constrained,
 												previous_cluster_name=previous_cluster_name, generation=generation)
 	self.ga_recording_system.record_initial_populations(self.population) # self.ga_recording_system.record_initial_populations(self.population)
 	self.ga_recording_system.add_collection(self.population,[])

@@ -1,7 +1,7 @@
 import os
 from shutil import copyfile
-
 from Organisms.GA.Collection import Collection
+
 
 class Population(Collection):
 	"""

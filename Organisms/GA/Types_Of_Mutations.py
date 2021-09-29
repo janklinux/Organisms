@@ -75,7 +75,7 @@ def homotopMutate(cluster_to_mutate):
 	mutant[atom2Index].position = copy.deepcopy(temp)
 	return mutant
 
-def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_mutate=None,
+def randomMutate(boxtoplaceinlength, vacuumAdd, composition_constrained, cluster_makeup=None, cluster_to_mutate=None,
 				 percentage_of_cluster_to_randomise=None):
 	"""
 	This definition provides the random method for the mutation proceedure. In this method, a cluster is
@@ -106,15 +106,18 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, cluster_makeup=None, cluster_to_
 		print('Mutant transformed', file=sys.stdout)
 		cluster_chemical_formula = '' 
 		for element, no_of_element in cluster_makeup.items():
-			max_atom_change = int(np.floor(np.minimum(no_of_element, 5)))
-			if max_atom_change == no_of_element:
-				max_atom_change -= 1
-			if max_atom_change == 0:
-				actual_change = 0
+			if not composition_constrained:
+				max_atom_change = int(np.floor(np.minimum(no_of_element, 5)))
+				if max_atom_change == no_of_element:
+					max_atom_change -= 1
+				if max_atom_change == 0:
+					actual_change = 0
+				else:
+					actual_change = np.random.randint(low=-max_atom_change, high=max_atom_change, size=1, dtype=int)[0]
+				# print(element, actual_change, file=sys.stderr)
+				cluster_chemical_formula += str(element) + str(int(no_of_element + actual_change))
 			else:
-				actual_change = np.random.randint(low=-max_atom_change, high=max_atom_change, size=1, dtype=int)[0]
-			# print(element, actual_change, file=sys.stderr)
-			cluster_chemical_formula += str(element) + str(int(no_of_element + actual_change))
+				cluster_chemical_formula += str(element) + str(int(no_of_element))
 
 		# print('genning new mutant: ', cluster_chemical_formula)
 		# set up the cluster for randomizing

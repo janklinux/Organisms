@@ -4,7 +4,8 @@ from Organisms.GA.ExternalDefinitions import Exploded
 
 
 def Create_An_Unoptimised_Offspring(cluster_number, chance_of_mutation, cell_length, vacuum_to_add_length, population,
-                                    creating_offspring_mode, crossover_procedure, mutation_procedure):
+                                    creating_offspring_mode, crossover_procedure, mutation_procedure,
+                                    composition_constrained):
     """
     This definition provides the methodology for how to create an offspring.
 
@@ -47,7 +48,8 @@ def Create_An_Unoptimised_Offspring(cluster_number, chance_of_mutation, cell_len
         if Will_Mutation_Occur(choice_mate_or_mutate, chance_of_mutation):
             # print("Cluster " + str(cluster_number) + " obtained using the Mutation Method.")
             offspring, mutation_method = mutation_procedure.run(population, cell_length=cell_length,
-                                                                vacuum_length=vacuum_to_add_length)
+                                                                vacuum_length=vacuum_to_add_length,
+                                                                composition_constrained=composition_constrained)
         # how_created.append('Mutation')
         # print('The mutation method used was ' + mutation_method)
         else:
@@ -101,7 +103,7 @@ def Create_An_Offspring(input_data):
     (run_number, generation_number, population, offspring_pool_name, chance_of_mutation, r_ij, cell_length,
      vacuum_to_add_length, creating_offspring_mode, crossover_procedure, mutation_procedure,
      no_offspring_per_generation, rounding_criteria, Minimisation_Function, Initial_Energy_Function,
-     surface, place_cluster_where, print_details) = input_data
+     surface, place_cluster_where, print_details, composition_constrained) = input_data
 
     toString = ''
     cluster_name = run_number
@@ -112,7 +114,8 @@ def Create_An_Offspring(input_data):
     while True:
         UnOpt_offspring = Create_An_Unoptimised_Offspring(cluster_name, chance_of_mutation, cell_length,
                                                           vacuum_to_add_length, population, creating_offspring_mode,
-                                                          crossover_procedure, mutation_procedure)
+                                                          crossover_procedure, mutation_procedure,
+                                                          composition_constrained)
         # Locally Minimise the cluster
         try_statement_counter = 0
         # elements = ''
@@ -131,8 +134,8 @@ def Create_An_Offspring(input_data):
                 print(exception, file=sys.stderr)
                 print('Will Try to run the local optimisation process again', file=sys.stderr)
                 try_statement_counter += 1
-            if try_statement_counter == 10:
-                print('The above error has occurred 10 times.', file=sys.stderr)
+            if try_statement_counter == 20:
+                print('The above error has occurred 20 times.', file=sys.stderr)
                 print('Will make a new offspring and discard this one', file=sys.stderr)
                 print('If this is happening very rarely, this is fine and is not of major concern.', file=sys.stderr)
                 print('If you see this message multiple times during a genetic algorithm run, '

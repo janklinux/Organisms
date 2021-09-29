@@ -339,7 +339,7 @@ def Place_Already_Created_Clusters_In_Population(population, cluster_makeup, Min
 
 
 def get_tasks(population, clusters_to_create, cell_length, vacuum_to_add_length, cluster_makeup, surface, r_ij,
-			  rounding_criteria, Minimisation_Function, memory_operator):
+			  rounding_criteria, Minimisation_Function, memory_operator, composition_constrained):
 	"""
 	This is a generator that will allow python to create clusters with multiprocessing.
 
@@ -369,12 +369,12 @@ def get_tasks(population, clusters_to_create, cell_length, vacuum_to_add_length,
 	rtype   list of Any
 	"""
 	def tasks(population_name, clusters_to_create, cell_length, vacuum_to_add_length, cluster_makeup, surface,
-			  r_ij, rounding_criteria, Minimisation_Function, memory_operator):
+			  r_ij, rounding_criteria, Minimisation_Function, memory_operator, composition_constrained):
 		for cluster_to_create in clusters_to_create:
 			yield (population_name, cluster_to_create, cell_length, vacuum_to_add_length, cluster_makeup,
-				   surface, r_ij, rounding_criteria, Minimisation_Function, memory_operator)
+				   surface, r_ij, rounding_criteria, Minimisation_Function, memory_operator, composition_constrained)
 	return tasks(population.name, clusters_to_create, cell_length, vacuum_to_add_length, cluster_makeup,
-				 surface, r_ij, rounding_criteria, Minimisation_Function, memory_operator)
+				 surface, r_ij, rounding_criteria, Minimisation_Function, memory_operator, composition_constrained)
 
 
 def create_a_cluster(input_data):
@@ -388,7 +388,7 @@ def create_a_cluster(input_data):
 	rtype   (int,Organisms.GA.Cluster)
 	"""
 	(population_name, cluster_to_create, cell_length, vacuum_to_add_length, cluster_makeup, Surface, r_ij,
-	 rounding_criteria, Minimisation_Function, memory_operator) = input_data
+	 rounding_criteria, Minimisation_Function, memory_operator, composition_constrained) = input_data
 
 	index, cluster_name = cluster_to_create
 	#print("Creating Cluster " + str(cluster_name))
@@ -396,7 +396,8 @@ def create_a_cluster(input_data):
 	Opt_Cluster = None
 	while True:  # While required for self.Diversity_switch == "CNA_Full" option and Exploded(Opt_Cluster) method
 		try:
-			UnOpt_Cluster = randomMutate(cell_length, vacuum_to_add_length, cluster_makeup=cluster_makeup)
+			UnOpt_Cluster = randomMutate(cell_length, vacuum_to_add_length, composition_constrained,
+										 cluster_makeup=cluster_makeup)
 			stdout = sys.stdout
 			output = StringIO()
 			sys.stdout = output
@@ -435,7 +436,8 @@ def Initialise_Population_with_Randomly_Generated_Clusters(population, cluster_m
 														   Minimisation_Function, cell_length,
 														   vacuum_to_add_length, r_ij, rounding_criteria,
 														   no_of_cpus, memory_operator, predation_operator,
-														   fitness_operator, previous_cluster_name):
+														   fitness_operator, previous_cluster_name,
+														   composition_constrained):
 	"""
 	This method will place a number of randomly generated clusters into the population until it is at the desired size.
 
@@ -488,7 +490,8 @@ def Initialise_Population_with_Randomly_Generated_Clusters(population, cluster_m
 	while True:
 		# This will create the required number of clusters to complete the population
 		tasks = get_tasks(population, clusters_to_create, cell_length, vacuum_to_add_length, cluster_makeup,
-						  surface, r_ij, rounding_criteria, Minimisation_Function, memory_operator)
+						  surface, r_ij, rounding_criteria, Minimisation_Function, memory_operator,
+						  composition_constrained)
 		if no_of_cpus == 1:
 			# If you want to do work in serial
 			made_clusters = []
@@ -536,8 +539,8 @@ def Initialise_Population_with_Randomly_Generated_Clusters(population, cluster_m
 
 def Initialise_Population(population, cluster_makeup, surface, Minimisation_Function, Initial_Energy_Function,
 						  memory_operator, predation_operator, fitness_operator, epoch, cell_length,
-						  vacuum_to_add_length, r_ij, rounding_criteria, no_of_cpus, previous_cluster_name=0,
-						  generation=0, get_already_created_clusters=True, is_epoch=False,
+						  vacuum_to_add_length, r_ij, rounding_criteria, no_of_cpus, composition_constrained,
+						  previous_cluster_name=0, generation=0, get_already_created_clusters=True, is_epoch=False,
 						  epoch_due_to_population_energy_convergence=None):
 	"""
 	This method will initialise the Population by
@@ -614,7 +617,8 @@ def Initialise_Population(population, cluster_makeup, surface, Minimisation_Func
 																					   memory_operator,
 																					   predation_operator,
 																					   fitness_operator,
-																					   previous_cluster_name)
+																					   previous_cluster_name,
+																					   composition_constrained)
 		print('Have finished populating the rest of the population with ' +
 			  str(population.size - len(population)) + ' randomly generated clusters.')
 	# setting up the epoch and making sure initial population setup is all good

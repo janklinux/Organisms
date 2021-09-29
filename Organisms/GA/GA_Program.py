@@ -71,7 +71,7 @@ class GA_Program():
 	"""
 	def __init__(self, cluster_makeup, pop_size, generations, no_offspring_per_generation, creating_offspring_mode,
 				 crossover_type, mutation_types, chance_of_mutation, r_ij, vacuum_to_add_length, Minimisation_Function,
-				 Initial_Energy_Function, surface_details=None, epoch_settings={'use epoch': 'off'},
+				 Initial_Energy_Function, composition_constrained, surface_details=None, epoch_settings={'use epoch': 'off'},
  		         cell_length='default', memory_operator_information={'perform_memory_operator':'Off'},
 				 predation_information={'Predation_Switch':"Off"}, fitness_information={'Fitness_Switch':"Energy"},
 				 ga_recording_information={}, force_replace_pop_clusters_with_offspring=True,
@@ -90,7 +90,8 @@ class GA_Program():
 				 Minimisation_Function, Initial_Energy_Function, surface_details, epoch_settings, cell_length,
 				 memory_operator_information, predation_information, fitness_information, ga_recording_information,
 				 force_replace_pop_clusters_with_offspring, user_initialised_population_folder, rounding_criteria,
-				 print_details, no_of_cpus, finish_algorithm_if_found_cluster_energy, total_length_of_running_time)
+				 print_details, no_of_cpus, finish_algorithm_if_found_cluster_energy, total_length_of_running_time,
+				 composition_constrained)
 		# print introductory notes about your genetic algorithm run
 		Introducing_Remarks(self)
 		# Check the GA before beginning and initiate the GA program
@@ -354,25 +355,27 @@ class GA_Program():
 		print('-----------------------')
 		return self.offspring_pool[-1].name
 
-	def get_tasks(self,previous_cluster_name,generation_number):
+	def get_tasks(self, previous_cluster_name, generation_number):
 		"""
 		This provides a generator that contains the inputs needed to create the offspring via parallelisation.
 		"""
 		def tasks(previous_cluster_name, generation_number, population, offspring_pool_name, chance_of_mutation,
 				  r_ij, cell_length, vacuum_to_add_length, creating_offspring_mode, crossover_procedure,
 				  mutation_procedure, no_offspring_per_generation, rounding_criteria,
-				  Minimisation_Function, Initial_Energy_Function, surface, place_cluster_where, print_details):
+				  Minimisation_Function, Initial_Energy_Function, surface, place_cluster_where, print_details,
+				  composition_constrained):
 			run_numbers = range(previous_cluster_name+1, previous_cluster_name+self.no_offspring_per_generation+1)
 			for run_number in run_numbers:
 				yield (run_number, generation_number, population, offspring_pool_name, chance_of_mutation, r_ij,
 					   cell_length, vacuum_to_add_length, creating_offspring_mode, crossover_procedure,
 					   mutation_procedure, no_offspring_per_generation, rounding_criteria, Minimisation_Function,
-					   Initial_Energy_Function, surface,place_cluster_where,print_details)
+					   Initial_Energy_Function, surface, place_cluster_where, print_details, composition_constrained)
 		return tasks(previous_cluster_name, generation_number, self.population, self.offspring_pool_name,
 					 self.chance_of_mutation, self.r_ij, self.cell_length, self.vacuum_to_add_length,
 					 self.creating_offspring_mode, self.crossover_procedure, self.mutation_procedure,
 					 self.no_offspring_per_generation, self.rounding_criteria, self.Minimisation_Function,
-					 self.Initial_Energy_Function, self.surface, self.place_cluster_where, self.print_details)
+					 self.Initial_Energy_Function, self.surface, self.place_cluster_where, self.print_details,
+					 self.compostition_constrained)
 
 	#########################################################################################################################
 	#########################################################################################################################
