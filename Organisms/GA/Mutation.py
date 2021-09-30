@@ -133,7 +133,7 @@ class Mutation:
 			import pdb; pdb.set_trace()
 			exit('This program will finish without completing.')
 
-	def run(self, run_input, cell_length=None, vacuum_length=None):
+	def run(self, run_input, composition_constrained, cell_length=None, vacuum_length=None):
 		'''
 		This definition will run the Mutation Proceedure. 
 
@@ -161,7 +161,7 @@ class Mutation:
 		# Pick the type of mutation method to use
 		mutation_method = self.get_mutation_type()
 		# perform the mutation. 
-		mutant = self.mutation(mutation_method, cluster_to_mutate, cell_length,vacuum_length)
+		mutant = self.mutation(mutation_method, cluster_to_mutate, cell_length, vacuum_length, composition_constrained)
 		# respecify the vacuum around the cluster to that its distance is vacuumAdd
 		lengthOfCell = 2.0 * InclusionRadiusOfCluster(mutant) + vacuum_length
 		cell = [lengthOfCell, lengthOfCell, lengthOfCell]
@@ -217,7 +217,7 @@ class Mutation:
 		import pdb; pdb.set_trace()
 		exit('This program will finish without completing.')
 
-	def mutation(self, mutation_method, cluster_to_mutate, cell_length=None, vacuum_length=None):
+	def mutation(self, mutation_method, cluster_to_mutate, composition_constrained, cell_length=None, vacuum_length=None):
 		"""
 		This method will perform the mutation and return the mutant. 
 
@@ -234,6 +234,7 @@ class Mutation:
 		mutant = None
 		if mutation_method == "random":
 			mutant = randomMutate(cell_length, vacuum_length, cluster_makeup=cluster_to_mutate.get_elemental_makeup(),
+								  composition_constrained=composition_constrained,
 								  cluster_to_mutate=None, percentage_of_cluster_to_randomise=None)
 		elif mutation_method.startswith('random_'):
 			percentage_of_cluster_to_randomise = mutation_method.replace('random_', '')
@@ -249,7 +250,7 @@ class Mutation:
 				exit()
 			# this should be check later to see if it is working as intended.
 			mutant = randomMutate(cell_length, vacuum_length, cluster_makeup=None,
-								  cluster_to_mutate=cluster_to_mutate,
+								  cluster_to_mutate=cluster_to_mutate, composition_constrained=composition_constrained,
 								  percentage_of_cluster_to_randomise=percentage_of_cluster_to_randomise)
 		elif mutation_method.startswith("move"):
 			mutant = moveMutate(cluster_to_mutate, self.dist_to_move)
