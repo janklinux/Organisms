@@ -1,17 +1,19 @@
 import os
+import multiprocessing as mp
+
 from time import time
+from quippy.potential import Potential
+
 
 from Organisms.GA.GA_Setup import GA_Setup
 from Organisms.GA.GA_Introducing_Remarks import Introducing_Remarks
 from Organisms.GA.GA_Initiate import GA_Initiate
-from Organisms.GA.GA_Program_external_methods import if_to_finish_because_found_cluster_energy, check_names_1, check_names_2, add_metadata, floor_float, reset_population, check_files_for_readable_and_writable
+from Organisms.GA.GA_Program_external_methods import if_to_finish_because_found_cluster_energy, check_names_1, \
+	check_names_2, add_metadata, floor_float, reset_population, check_files_for_readable_and_writable
 from Organisms.GA.Lock import Lock_Check_and_Set #, Lock_Remove
-
 from Organisms.GA.Get_Offspring import Create_An_Offspring
-
-#from io import StringIO
-import multiprocessing as mp
 from Organisms.GA.exitting_procedure import add_to_exitting_procedure
+
 
 class GA_Program():
 	"""
@@ -71,7 +73,8 @@ class GA_Program():
 	"""
 	def __init__(self, cluster_makeup, pop_size, generations, no_offspring_per_generation, creating_offspring_mode,
 				 crossover_type, mutation_types, chance_of_mutation, r_ij, vacuum_to_add_length, Minimisation_Function,
-				 Initial_Energy_Function, composition_constrained, surface_details=None, epoch_settings={'use epoch': 'off'},
+				 Initial_Energy_Function, composition_constrained,
+				 surface_details=None, epoch_settings={'use epoch': 'off'},
  		         cell_length='default', memory_operator_information={'perform_memory_operator':'Off'},
 				 predation_information={'Predation_Switch':"Off"}, fitness_information={'Fitness_Switch':"Energy"},
 				 ga_recording_information={}, force_replace_pop_clusters_with_offspring=True,
@@ -84,6 +87,7 @@ class GA_Program():
 		add_to_exitting_procedure()
 		# Check to make sure that all files in the folder are readable and writeable
 		check_files_for_readable_and_writable()
+		# Initialize the GAP here instead of every single time we run it, performs much better
 		# Set up the genetic algorithm
 		GA_Setup(self, cluster_makeup, pop_size, generations, no_offspring_per_generation, creating_offspring_mode,
 				 crossover_type, mutation_types, chance_of_mutation, r_ij, vacuum_to_add_length,
@@ -324,6 +328,7 @@ class GA_Program():
 	#                   Has been set up for parallelisation.                     #
 	#----------------------------------------------------------------------------#
 
+
 	def get_offsprings(self,previous_cluster_name,generation_number):
 		tasks = self.get_tasks(previous_cluster_name,generation_number)
 		print('-----------------------')
@@ -336,7 +341,7 @@ class GA_Program():
 				offspring, toString = Create_An_Offspring(task)
 				offsprings.append((offspring, toString))
 		else:
-			with mp.Pool(processes=self.no_of_cpus) as pool: # pool = mp.Pool()
+			with mp.Pool(processes=self.no_of_cpus) as pool:
 				results = pool.map_async(Create_An_Offspring, tasks)
 				results.wait()
 			offsprings = results.get()

@@ -366,7 +366,7 @@ class Epoch:
 		"""
 		(cluster_makeup, surface, Minimisation_Function, Initial_Energy_Function, memory_operator, predation_operator,
 		 fitness_operator, epoch_method, cell_length, vacuum_to_add_length, r_ij, rounding_criteria, no_of_cpus,
-		 previous_cluster_name) = population_reset_settings
+		 previous_cluster_name, composition_constrained) = population_reset_settings
 		# ---------------------------------------------------------------------------------------- #
 		# reset the predation and fitness operators
 		fitness_operator.reset()
@@ -389,7 +389,8 @@ class Epoch:
 													  previous_cluster_name=previous_cluster_name,
 													  generation=generation_number,
 													  get_already_created_clusters=False, is_epoch=True,
-													  epoch_due_to_population_energy_convergence=epoch_due_to_population_energy_convergence)
+													  epoch_due_to_population_energy_convergence=epoch_due_to_population_energy_convergence,
+													  composition_constrained=composition_constrained)
 		# ---------------------------------------------------------------------------------------- #
 		# reset the epoch_data file
 		self.clusters_in_previous_population = population.get_cluster_names()

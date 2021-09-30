@@ -433,7 +433,7 @@ def create_a_cluster(input_data):
 
 
 def Initialise_Population_with_Randomly_Generated_Clusters(population, cluster_makeup, surface,
-														   Minimisation_Function, cell_length,
+														   Minimisation_Function,cell_length,
 														   vacuum_to_add_length, r_ij, rounding_criteria,
 														   no_of_cpus, memory_operator, predation_operator,
 														   fitness_operator, previous_cluster_name,

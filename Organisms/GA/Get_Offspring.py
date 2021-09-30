@@ -88,6 +88,7 @@ def Will_Mutation_Occur(choice_mate_or_mutate, chance_of_mutation):
 
 
 def Create_An_Offspring(input_data):
+
     """
     This method is used to obtain an offspring
 
@@ -126,7 +127,8 @@ def Create_An_Offspring(input_data):
         while True:
             try:
                 Opt_offspring, converged, opt_information = Minimisation_Function(UnOpt_offspring.deepcopy(),
-                                                                                  offspring_pool_name, cluster_name)
+                                                                                  offspring_pool_name,
+                                                                                  cluster_name)
                 break
             except Exception as exception:
                 print('Something has gone wrong during the local optimisation process', file=sys.stderr)

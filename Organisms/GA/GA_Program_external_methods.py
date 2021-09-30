@@ -78,7 +78,8 @@ def reset_population(self,generation_number):
 	population_reset_settings = (self.cluster_makeup, self.surface, self.Minimisation_Function,
 								 self.Initial_Energy_Function, self.memory_operator, self.predation_operator,
 								 self.fitness_operator, self.epoch, self.cell_length, self.vacuum_to_add_length,
-								 self.r_ij, self.rounding_criteria, self.no_of_cpus, self.previous_cluster_name)
+								 self.r_ij, self.rounding_criteria, self.no_of_cpus, self.previous_cluster_name,
+								 self.composition_constrained)
 	epoch_due_to_population_energy_convergence = not self.population.is_there_an_energy_range(self.rounding_criteria)
 	self.previous_cluster_name = self.epoch.perform_epoch(generation_number, self.population, self.energyprofile,
 														  population_reset_settings,

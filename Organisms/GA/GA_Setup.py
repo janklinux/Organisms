@@ -1,17 +1,14 @@
 import os
+import inspect
 
 from Organisms.GA.Surface import Surface
-
 from Organisms.GA.Population import Population
 from Organisms.GA.Offspring_Pool import Offspring_Pool
-
 from Organisms.GA.Crossover import Crossover
 from Organisms.GA.Mutation import Mutation
-
 from Organisms.GA.Memory_Operator import Memory_Operator
 from Organisms.GA.Get_Predation_and_Fitness_Operators import get_predation_and_fitness_operators
 from Organisms.GA.Epoch import Epoch
-
 from Organisms.GA.GA_Recording_System import GA_Recording_System
 from Organisms.GA.EnergyProfile import EnergyProfile
 from Organisms.GA.Timer import Timer
@@ -81,7 +78,6 @@ def GA_Setup(self, cluster_makeup, pop_size, generations, no_offspring_per_gener
 	# set_number_of_cpus
 	self.no_of_cpus = no_of_cpus
 	self.composition_constrained = composition_constrained
-
 	# Variables for the Genetic Algorithm
 	# This details the elemental and number of atom composition of cluster that the user would like to investigate
 	self.cluster_makeup = cluster_makeup
@@ -154,12 +150,11 @@ def GA_Setup(self, cluster_makeup, pop_size, generations, no_offspring_per_gener
 	# the local optimisations. This is meant to be as free as possible.
 	# Variable which provides the directory for the script or program for running the local
 	# optimisation method.
-	import inspect
 	if not inspect.isfunction(Minimisation_Function):
 		exit('Error: Minimisation_Function must be a function/def (definition)')
 	self.Minimisation_Function = Minimisation_Function
 	if not inspect.isfunction(Initial_Energy_Function):
-		exit('Error: Minimisation_Function must be a function/def (definition)')
+		exit('Error: Initial_energy_Function must be a function/def (definition)')
 	self.Initial_Energy_Function = Initial_Energy_Function
 
 	# These are last techinical points that the algorithm is designed in mind
