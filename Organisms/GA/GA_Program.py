@@ -375,7 +375,7 @@ class GA_Program():
 					 self.creating_offspring_mode, self.crossover_procedure, self.mutation_procedure,
 					 self.no_offspring_per_generation, self.rounding_criteria, self.Minimisation_Function,
 					 self.Initial_Energy_Function, self.surface, self.place_cluster_where, self.print_details,
-					 self.compostition_constrained)
+					 self.composition_constrained)
 
 	#########################################################################################################################
 	#########################################################################################################################
