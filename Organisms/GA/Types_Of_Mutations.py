@@ -152,8 +152,6 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, composition_constrained, cluster
 					exchange[species] = sample(symbols[species], 1)
 
 				pairs = list(exchange.items())
-				print('P: ', pairs, file=sys.stderr)
-				sys.stderr.flush()
 
 				swapped = dict({pairs[1][0]: exchange[pairs[0][0]], pairs[0][0]: exchange[pairs[1][0]]})
 				for species in swapped:
