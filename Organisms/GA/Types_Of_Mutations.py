@@ -3,7 +3,6 @@ import sys
 import time
 import numpy as np
 from random import randrange, uniform, randint, sample
-from pymatgen.io.ase import AseAtomsAdaptor
 from Organisms.GA.Cluster import Cluster
 from Organisms.GA.ExternalDefinitions import is_position_already_occupied_by_an_atom_in_Cluster # , InclusionRadiusOfCluster
 
@@ -128,41 +127,39 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, composition_constrained, cluster
 	elif cluster_makeup is None and not (cluster_to_mutate is None or percentage_of_cluster_to_randomise is None):
 		mutant = copy.deepcopy(cluster_to_mutate)
 		nAtoms = len(mutant)
-		structure = AseAtomsAdaptor().get_structure(mutant)
-		if len(structure.composition.elements) == 1:  # no swapping of unary material
+		if len(mutant.get_chemical_symbols()) == 1:  # no swapping of unary material
 			swapping_prob = 0
 		else:
 			swapping_prob = 0.75
 
-		if np.random.random() < swapping_prob:  # my additional idea
-			print('Mutant swapped', file=sys.stdout)
-			symbols = dict()
-			for idx, species in enumerate(structure.species):
-				if species.name not in symbols:
-					symbols[species.name] = []
-					symbols[species.name].append(idx)
-				else:
-					symbols[species.name].append(idx)
+		# my additional idea of swapping single atoms
+		# at this point we could also swap multiple atoms but this is not composition_constrained -> use else here TODO
+		if composition_constrained:
+			if np.random.random() > swapping_prob:
+				print('Mutant swapped', file=sys.stdout)
+				symbols = dict()
+				for idx, species in enumerate(mutant.get_chemical_symbols()):
+					if species not in symbols:
+						symbols[species] = []
+						symbols[species].append(idx)
+					else:
+						symbols[species].append(idx)
 
-			if 'Co' in symbols or 'Ni' in symbols:
-				min_species = 1
-			else:
-				min_species = np.amin([[str(s) for s in structure.species].count(str(species))
-									   for species in structure.composition.elements])
+				chosen = np.random.choice([s for s in symbols], 2)
 
-			exchange = dict()
-			for species in symbols:
-				exchange[species] = sample(symbols[species], randint(1, min_species))
-			pairs = list(exchange.items())
-			swapped = dict({pairs[1][0]: exchange[pairs[0][0]], pairs[0][0]: exchange[pairs[1][0]]})
-			# print(swapped, file=sys.stderr)
-			for species in swapped:
-				for idx in swapped[species]:
-					structure.replace(idx, species=species)
-			structure.sort()
-			mutant = Cluster(AseAtomsAdaptor.get_atoms(structure))
-			nAtoms = len(mutant)
-			atoms_to_randomise = range(nAtoms)
+				exchange = dict()
+				for species in chosen:
+					exchange[species] = sample(symbols[species], 1)
+
+				pairs = list(exchange.items())
+
+				swapped = dict({pairs[1][0]: exchange[pairs[0][0]], pairs[0][0]: exchange[pairs[1][0]]})
+				for species in swapped:
+					for idx in swapped[species]:
+						mutant[idx].symbol = species
+
+				nAtoms = len(mutant)
+				atoms_to_randomise = range(nAtoms)
 
 		else:
 			# The following will pick random atoms in the cluster to randomise, original code
