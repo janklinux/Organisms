@@ -130,12 +130,12 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, composition_constrained, cluster
 		if len(mutant.get_chemical_symbols()) == 1:  # no swapping of unary material
 			swapping_prob = 0
 		else:
-			swapping_prob = 0.75
+			swapping_prob = 0.45
 
 		# my additional idea of swapping single atoms
 		# at this point we could also swap multiple atoms but this is not composition_constrained -> use else here TODO
 		if composition_constrained:
-			if np.random.random() > swapping_prob:
+			if np.random.random() < swapping_prob:
 				print('Mutant swapped', file=sys.stdout)
 				symbols = dict()
 				for idx, species in enumerate(mutant.get_chemical_symbols()):
