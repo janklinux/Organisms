@@ -154,8 +154,8 @@ def Create_An_Offspring(input_data):
         else:
             break
         # if this happens too much, don't break the algorithm just take it as it is and move on
-        if no_of_explosions + no_of_not_converged == 10:
-            print('Offspring has exploded 10 times.', file=sys.stderr)
+        if no_of_explosions + no_of_not_converged == 20:
+            print('Offspring has exploded 20 times.', file=sys.stderr)
             # print('Something weird is happening, but in any case the genetic algorithm will move on so that '
             #       'it can try created other offspring and not waste too much computational time.', file=sys.stderr)
             # print('If this is happening very rarely, this is fine and is not of major concern.', file=sys.stderr)
