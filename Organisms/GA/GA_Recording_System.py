@@ -495,7 +495,8 @@ class GA_Recording_System:
 		# Other features of the genetic algorithm to monitor.
 		self.record_initial_population = self._get_parameter('record_initial_population',if_not_given_response=False)
 		####################################################################################################
-		# create required variables and files that are needed to record the stages of the algorithm after the desired generations as specified in saving_points_of_GA
+		# create required variables and files that are needed to record the stages of the algorithm after the desired
+		# generations as specified in saving_points_of_GA
 		self.saving_points_of_GA = self._get_parameter('saving_points_of_GA',if_not_given_response=[])
 		if not self.saving_points_of_GA == []:
 			self.saving_points_in_GA_name = 'Saved_Points_In_GA_Run'
@@ -509,7 +510,8 @@ class GA_Recording_System:
 
 	def add_metadata(self):
 		"""
-		This method is designed to assign the metadata o the ASE database, as in some versions of ASE this can not happen until at least one cluster has been added to the ASE database.
+		This method is designed to assign the metadata o the ASE database, as in some versions of ASE this
+		can not happen until at least one cluster has been added to the ASE database.
 		"""
 		if 'clusters_database' in self.__dict__.keys():
 			self.clusters_database.add_metadata()
@@ -523,7 +525,8 @@ class GA_Recording_System:
 		
 		:param parameter: This is the parameter to obtain from self.ga_recording_information
 		:type  parameter: str.
-		:param if_not_given_response: This is the default value to assign the parameter parameter to in this class if it hasn't been given by the user. 
+		:param if_not_given_response: This is the default value to assign the parameter parameter to in this class
+		if it hasn't been given by the user.
 		:type  if_not_given_response: Any
 
 		returns the value to assign a certain parameter to in this class.
