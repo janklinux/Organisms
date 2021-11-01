@@ -134,11 +134,11 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, composition_constrained, cluster
 
 		# my additional idea of swapping single atoms
 		# at this point we could also swap multiple atoms but this is not composition_constrained -> use else here TODO
-		distinct_species = list()
-		for s in mutant.get_chemical_symbols():
-			if s not in distinct_species:
-				distinct_species.append(s)
 		if composition_constrained:
+			distinct_species = list()
+			for s in mutant.get_chemical_symbols():
+				if s not in distinct_species:
+					distinct_species.append(s)
 			if len(distinct_species) > 1:
 				if np.random.random() < swapping_prob:
 					symbols = dict()
