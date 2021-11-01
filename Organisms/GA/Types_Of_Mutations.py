@@ -126,11 +126,7 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, composition_constrained, cluster
 	# preparing this method for only randomly changing the position of only a percentage (of atoms) of a cluster.
 	elif cluster_makeup is None and not (cluster_to_mutate is None or percentage_of_cluster_to_randomise is None):
 		mutant = copy.deepcopy(cluster_to_mutate)
-		nAtoms = len(mutant)
-		if len(mutant.get_chemical_symbols()) == 1:  # no swapping of unary material
-			swapping_prob = 0
-		else:
-			swapping_prob = 0.45
+		swapping_prob = 0.45
 
 		# my additional idea of swapping single atoms
 		# at this point we could also swap multiple atoms but this is not composition_constrained -> use else here TODO
@@ -169,6 +165,7 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, composition_constrained, cluster
 		else:
 			# The following will pick random atoms in the cluster to randomise, original code
 			print('Mutant randomized', file=sys.stdout)
+			nAtoms = len(mutant)
 			no_of_atoms_to_randomise = int(np.ceil(float(nAtoms) * (float(percentage_of_cluster_to_randomise) / 100.0)))
 			all_atoms_in_cluster = [int(ia) for ia in range(nAtoms)]
 			atoms_to_randomise = []
