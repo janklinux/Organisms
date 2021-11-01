@@ -138,33 +138,34 @@ def randomMutate(boxtoplaceinlength, vacuumAdd, composition_constrained, cluster
 		for s in mutant.get_chemical_symbols():
 			if s not in distinct_species:
 				distinct_species.append(s)
-		if composition_constrained and len(distinct_species) > 1:
-			if np.random.random() < swapping_prob:
-				symbols = dict()
-				for idx, species in enumerate(mutant.get_chemical_symbols()):
-					if species not in symbols:
-						symbols[species] = []
-						symbols[species].append(idx)
-					else:
-						symbols[species].append(idx)
+		if composition_constrained:
+			if len(distinct_species) > 1:
+				if np.random.random() < swapping_prob:
+					symbols = dict()
+					for idx, species in enumerate(mutant.get_chemical_symbols()):
+						if species not in symbols:
+							symbols[species] = []
+							symbols[species].append(idx)
+						else:
+							symbols[species].append(idx)
 
-				chosen = sample([s for s in symbols], 2)
+					chosen = sample([s for s in symbols], 2)
 
-				exchange = dict()
-				for species in chosen:
-					exchange[species] = sample(symbols[species], 1)
+					exchange = dict()
+					for species in chosen:
+						exchange[species] = sample(symbols[species], 1)
 
-				pairs = list(exchange.items())
+					pairs = list(exchange.items())
 
-				swapped = dict({pairs[1][0]: exchange[pairs[0][0]], pairs[0][0]: exchange[pairs[1][0]]})
-				for species in swapped:
-					for idx in swapped[species]:
-						mutant[idx].symbol = species
+					swapped = dict({pairs[1][0]: exchange[pairs[0][0]], pairs[0][0]: exchange[pairs[1][0]]})
+					for species in swapped:
+						for idx in swapped[species]:
+							mutant[idx].symbol = species
 
-				nAtoms = len(mutant)
-				atoms_to_randomise = range(nAtoms)
+					nAtoms = len(mutant)
+					atoms_to_randomise = range(nAtoms)
 
-				print('Mutant swapped', file=sys.stdout)
+					print('Mutant swapped', file=sys.stdout)
 		else:
 			# The following will pick random atoms in the cluster to randomise, original code
 			print('Mutant randomized', file=sys.stdout)
